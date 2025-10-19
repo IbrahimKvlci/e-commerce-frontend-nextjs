@@ -1,4 +1,5 @@
 import ProductCard from "@/components/ProductCard";
+import ProductSwiper from "@/components/ProductSwiper";
 
 export default function Home() {
   return (
@@ -6,6 +7,17 @@ export default function Home() {
       <main className="text-center">
         <h1 className="text-4xl font-bold mb-4">E-Commerce Frontend</h1>
         <p className="text-lg text-gray-600">Ready to build your e-commerce application</p>
+        <ProductSwiper/>
+        <ProductCard
+          product={{
+            id: 1,
+            name: "Sample Productqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+            price: 24.99,
+            image: "https://via.placeholder.com/300x400.png?text=Product+Image",
+            description: "This is a sample product to showcase the ProductCard.",
+            rating: 4.2
+          }}
+        />
         <ProductCard
           product={{
             id: 1,
