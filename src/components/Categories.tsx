@@ -1,84 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { CategorySubcategory } from "@/models/CategorySubcategory";
+import CategoryService from "@/services/CategoryService";
+import { useEffect, useState } from "react";
 
 export default function Categories() {
-    const categories = [
-        { 
-            name: "Electronics", 
-            href: "/category/electronics",
-            subcategories: [
-                { name: "Smartphones", href: "/category/electronics/smartphones" },
-                { name: "Laptops", href: "/category/electronics/laptops" },
-                { name: "Tablets", href: "/category/electronics/tablets" },
-                { name: "Audio", href: "/category/electronics/audio" },
-                { name: "Cameras", href: "/category/electronics/cameras" },
-                { name: "Gaming", href: "/category/electronics/gaming" }
-            ]
-        },
-        { 
-            name: "Fashion", 
-            href: "/category/fashion",
-            subcategories: [
-                { name: "Men's Clothing", href: "/category/fashion/mens" },
-                { name: "Women's Clothing", href: "/category/fashion/womens" },
-                { name: "Shoes", href: "/category/fashion/shoes" },
-                { name: "Accessories", href: "/category/fashion/accessories" },
-                { name: "Jewelry", href: "/category/fashion/jewelry" },
-                { name: "Watches", href: "/category/fashion/watches" }
-            ]
-        },
-        { 
-            name: "Home", 
-            href: "/category/home",
-            subcategories: [
-                { name: "Furniture", href: "/category/home/furniture" },
-                { name: "Kitchen", href: "/category/home/kitchen" },
-                { name: "Bedding", href: "/category/home/bedding" },
-                { name: "Decor", href: "/category/home/decor" },
-                { name: "Garden", href: "/category/home/garden" },
-                { name: "Appliances", href: "/category/home/appliances" }
-            ]
-        },
-        { 
-            name: "Beauty", 
-            href: "/category/beauty",
-            subcategories: [
-                { name: "Skincare", href: "/category/beauty/skincare" },
-                { name: "Makeup", href: "/category/beauty/makeup" },
-                { name: "Hair Care", href: "/category/beauty/hair" },
-                { name: "Fragrances", href: "/category/beauty/fragrances" },
-                { name: "Tools", href: "/category/beauty/tools" },
-                { name: "Men's Grooming", href: "/category/beauty/mens-grooming" }
-            ]
-        },
-        { 
-            name: "Sports", 
-            href: "/category/sports",
-            subcategories: [
-                { name: "Fitness", href: "/category/sports/fitness" },
-                { name: "Outdoor", href: "/category/sports/outdoor" },
-                { name: "Team Sports", href: "/category/sports/team" },
-                { name: "Water Sports", href: "/category/sports/water" },
-                { name: "Winter Sports", href: "/category/sports/winter" },
-                { name: "Equipment", href: "/category/sports/equipment" }
-            ]
-        },
-        { 
-            name: "Books", 
-            href: "/category/books",
-            subcategories: [
-                { name: "Fiction", href: "/category/books/fiction" },
-                { name: "Non-Fiction", href: "/category/books/non-fiction" },
-                { name: "Textbooks", href: "/category/books/textbooks" },
-                { name: "Children's Books", href: "/category/books/children" },
-                { name: "E-books", href: "/category/books/ebooks" },
-                { name: "Audiobooks", href: "/category/books/audiobooks" }
-            ]
-        }
-    ];
-
     const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
+    const [categories, setCategories] = useState<CategorySubcategory[]>([]);
+
+    useEffect(() => {
+        const categoryService: CategoryService = new CategoryService();
+        categoryService.getParentCategoryWithSubcategory().then((data) => {
+            setCategories(data);
+        });
+    }, []);
+
+    console.log("Categories:", categories);
 
     return (
         <div className="w-full bg-gray-50 py-2 px-8 shadow-sm relative">
@@ -89,7 +26,6 @@ export default function Categories() {
                         className="relative group"
                     >
                         <a 
-                            href={category.href} 
                             className="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1 py-2 px-3 rounded-md hover:bg-gray-100"
                             onMouseEnter={() => setHoveredCategory(index)}
                             onMouseLeave={() => setHoveredCategory(null)}
@@ -116,7 +52,6 @@ export default function Categories() {
                                     {category.subcategories.map((subcategory, subIndex) => (
                                         <a
                                             key={subIndex}
-                                            href={subcategory.href}
                                             className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
                                         >
                                             {subcategory.name}
