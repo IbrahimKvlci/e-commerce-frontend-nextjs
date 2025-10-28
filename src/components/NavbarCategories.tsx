@@ -4,7 +4,7 @@ import { CategorySubcategory } from "@/models/CategorySubcategory";
 import CategoryService from "@/services/CategoryService";
 import { useEffect, useState } from "react";
 
-export default function Categories() {
+export default function NavbarCategories() {
     const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
     const [categories, setCategories] = useState<CategorySubcategory[]>([]);
 
@@ -30,7 +30,7 @@ export default function Categories() {
                             onMouseEnter={() => setHoveredCategory(index)}
                             onMouseLeave={() => setHoveredCategory(null)}
                         >
-                            <span>{category.name}</span>
+                            <span className="cursor-pointer">{category.name}</span>
                             <svg 
                                 className={`w-4 h-4 transition-transform duration-200 ${hoveredCategory === index ? 'rotate-180' : ''}`}
                                 fill="none" 
@@ -50,9 +50,9 @@ export default function Categories() {
                             >
                                 <div className="py-2">
                                     {category.subcategories.map((subcategory, subIndex) => (
-                                        <a
+                                        <a 
                                             key={subIndex}
-                                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
+                                            className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
                                         >
                                             {subcategory.name}
                                         </a>

@@ -1,4 +1,4 @@
-import Categories from "./Categories";
+import Categories from "./NavbarCategories";
 
 export default function Navbar() {
     
@@ -14,7 +14,7 @@ export default function Navbar() {
                 <div className="flex-1 flex justify-center px-8">
                     <input
                         type="text"
-                        placeholder="Search products"
+                        placeholder="Ürün, kategori veya marka ara"
                         className="w-full max-w-md px-3 py-2 border border-gray-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-300"
                     />
                 </div>
@@ -32,9 +32,9 @@ export default function Navbar() {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M1 1h4l2.68 13.39A2 2 0 0 0 9.63 17h7.72a2 2 0 0 0 1.95-1.61l2.36-10.39A1 1 0 0 0 20.32 4H6"/>
                         </svg>
                     </a>
-                    <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors font-medium">
+                    <a href="/authentication/login" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors font-medium">
                         Login
-                    </button>
+                    </a>
                 </div>
             </nav>
             <Categories />

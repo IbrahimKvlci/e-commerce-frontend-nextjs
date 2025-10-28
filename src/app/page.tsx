@@ -1,4 +1,5 @@
 
+import Banner from "@/components/Banner";
 import ProductSwiper from "@/components/ProductSwiper";
 import CategoryService from "@/services/CategoryService";
 import ProductService from "@/services/ProductService";
@@ -17,7 +18,10 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-white">
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main>
+        <div className="mb-[20px]">
+          <Banner/>
+        </div>
         {/* Categories with their own swipers */}
         {categories.map((category, index) => (
           <section key={index} className="mb-12">
