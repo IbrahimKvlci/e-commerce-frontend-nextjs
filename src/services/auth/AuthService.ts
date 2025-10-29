@@ -6,7 +6,7 @@ export default class AuthService{
     private API_URL=`${process.env.NEXT_PUBLIC_API_URL}/auth`;
 
     async login(authLogin:AuthLogin){
-        const authInfo:AuthInfo[]=await apiPost(`${this.API_URL}/login`,authLogin)
+        const authInfo:AuthInfo=await apiPost(`${this.API_URL}/login`,authLogin)
         return authInfo;
     }
 }

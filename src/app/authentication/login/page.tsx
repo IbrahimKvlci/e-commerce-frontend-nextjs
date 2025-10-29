@@ -2,14 +2,14 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import AuthService from "@/services/auth/AuthService";
+import FrontAuthService from "@/services/auth/FrontAuthService";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const authService=new AuthService();
+  const authService=new FrontAuthService()
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
