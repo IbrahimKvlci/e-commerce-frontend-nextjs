@@ -6,4 +6,9 @@ export default class FrontAuthService{
         const res=await apiPost(`/api/auth/login`,authLogin)
         return res;
     }
+
+    async logout() {
+        const res = await apiPost(`/api/auth/logout`, {});
+        return res;
+    }
 }

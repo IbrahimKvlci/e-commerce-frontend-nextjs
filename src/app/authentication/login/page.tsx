@@ -3,24 +3,30 @@
 import { useState } from "react";
 import Link from "next/link";
 import FrontAuthService from "@/services/auth/FrontAuthService";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
   const authService=new FrontAuthService()
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    authService.login({email,password})
-    console.log("Login attempt:", { email, password });
+    await authService.login({email,password}).then(() => {
+      toast.success("Giriş yapıldı");
+      window.location.href = "/";
+    }).catch((error) => {
+      toast.error("Giriş yapılamadı");
+    });
   };
 
 
 
   return (
     <div className="flex flex-col justify-center py-3">
+      <ToastContainer />
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
           Hesabınıza Giriş Yapın

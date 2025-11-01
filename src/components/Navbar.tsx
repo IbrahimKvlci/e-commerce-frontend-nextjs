@@ -1,7 +1,10 @@
 import Categories from "./NavbarCategories";
+import ProfileDropdown from "./ProfileDropdown";
+import { isUserLoggedIn } from "@/lib/auth";
 
-export default function Navbar() {
+export default async function Navbar() {
     
+    const isLoggedIn = await isUserLoggedIn();
     return(
         <div>
             {/* Top Navbar: Logo, Searchbar, Favorites, Cart, Login/Logout */}
@@ -32,9 +35,20 @@ export default function Navbar() {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M1 1h4l2.68 13.39A2 2 0 0 0 9.63 17h7.72a2 2 0 0 0 1.95-1.61l2.36-10.39A1 1 0 0 0 20.32 4H6"/>
                         </svg>
                     </a>
-                    <a href="/authentication/login" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors font-medium">
-                        Login
-                    </a>
+                    <div className="flex items-center space-x-3">
+                        {isLoggedIn ? (
+                            <ProfileDropdown />
+                        ) : (
+                            <>
+                                <a href="/authentication/login" className="flex items-center bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition-colors font-medium space-x-2">
+                                    <span>Giriş yap</span>
+                                </a>
+                                <a href="/authentication/login" className="flex items-center bg-gray-300 text-gray-600 px-4 py-2 rounded hover:bg-gray-400 transition-colors font-medium space-x-2">
+                                    <span>Kayıt ol</span>
+                                </a>
+                            </>
+                        )}
+                    </div>
                 </div>
             </nav>
             <Categories />
