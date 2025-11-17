@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import FrontAuthService from "@/services/auth/FrontAuthService";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import AuthService from "@/services/auth/AuthService";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const authService=new FrontAuthService()
+  const authService=new AuthService()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

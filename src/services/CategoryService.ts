@@ -1,4 +1,4 @@
-import { apiGet } from "@/lib/api";
+import { apiGet } from "@/lib/serverApi";
 import { Category } from "@/models/Category";
 import { CategorySubcategory } from "@/models/CategorySubcategory";
 

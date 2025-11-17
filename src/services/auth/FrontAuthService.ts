@@ -1,12 +1,6 @@
-import { apiPost } from "@/lib/api";
-import { AuthLogin } from "@/models/AuthLogin";
+import { apiPost } from "@/lib/clientApi";
 
 export default class FrontAuthService{
-    async login(authLogin:AuthLogin){
-        const res=await apiPost(`/api/auth/login`,authLogin)
-        return res;
-    }
-
     async logout() {
         const res = await apiPost(`/api/auth/logout`, {});
         return res;

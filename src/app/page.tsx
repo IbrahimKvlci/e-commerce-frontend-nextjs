@@ -1,9 +1,7 @@
-
 import Banner from "@/components/Banner";
 import ProductSwiper from "@/components/ProductSwiper";
 import CategoryService from "@/services/CategoryService";
 import ProductService from "@/services/ProductService";
-
 
 export default async function Home() {
 
@@ -14,6 +12,7 @@ export default async function Home() {
     productService.getAllDisplayProductsByCategoryId(2),
     categoryService.getParentCategoryWithSubcategory()
   ])
+
 
 
   return (

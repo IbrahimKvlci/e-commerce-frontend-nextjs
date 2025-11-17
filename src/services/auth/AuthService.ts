@@ -1,5 +1,5 @@
 import { AuthLogin } from './../../models/AuthLogin';
-import { apiPost } from "@/lib/api";
+import { apiPost } from "@/lib/clientApi";
 import { AuthInfo } from "@/models/AuthInfo";
 
 export default class AuthService{

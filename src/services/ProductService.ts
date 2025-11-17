@@ -1,4 +1,4 @@
-import { apiGet } from "@/lib/api";
+import { apiGet } from "@/lib/serverApi";
 import { DisplayProduct } from "@/models/DisplayProduct";
 
 export default class ProductService{
