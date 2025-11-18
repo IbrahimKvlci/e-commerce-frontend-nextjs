@@ -1,3 +1,5 @@
+"use client"
+
 import FrontAuthService from "@/services/auth/FrontAuthService";
 
 export default async function LogoutPage() {
@@ -5,7 +7,6 @@ export default async function LogoutPage() {
 
     authService.logout().then(()=>{
         window.location.href = "/authentication/login";
-
     })
 
     return(

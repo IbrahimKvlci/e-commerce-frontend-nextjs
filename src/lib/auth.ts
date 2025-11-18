@@ -16,7 +16,7 @@ export async function verifyAuthToken(token: string) {
  * @returns Promise<boolean> - true if user is authenticated, false otherwise
  */
 export async function isUserLoggedIn(): Promise<boolean> {
-  const token = (await cookies()).get('token')?.value;
+  const token = (await cookies()).get('jwt')?.value;
   return token ? true : false;
 }
 

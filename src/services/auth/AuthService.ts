@@ -9,4 +9,5 @@ export default class AuthService{
         const authInfo:AuthInfo=await apiPost(`${this.API_URL}/login`,authLogin)
         return authInfo;
     }
+
 }
