@@ -1,69 +1,121 @@
 "use client"
 
-import { DisplayProduct } from "@/models/DisplayProduct";
+import { Minus, Plus, Trash2, Store } from "lucide-react";
+import CartItemService from "@/services/CartItemService";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 interface ProductCardProps {
-    product: DisplayProduct;
+    product: CartProductItem;
 }
 
-const ProductCartCard: React.FC<ProductCardProps> = ({ product }) =>  {
-    
+const ProductCartCard: React.FC<ProductCardProps> = ({ product }) => {
+
+    const cartItemService = new CartItemService();
+    const router = useRouter();
+    const [quantity, setQuantity] = useState(product.quantity);
+
+    const handleQuantityChange = async (newQuantity: number) => {
+        if (newQuantity <= 0) {
+            await cartItemService.deleteCartItem(product.id);
+            router.refresh();
+            return;
+        }
+        try {
+            await cartItemService.updateCartItem(newQuantity, product.id);
+            setQuantity(newQuantity);
+            router.refresh();
+        } catch (error) {
+            console.error("Failed to update cart item:", error);
+        }
+    };
+
     return (
-        <div>
-        <div className="relative rounded-xl shadow border border-gray-100 w-full mx-auto bg-white flex flex-row items-stretch min-h-[200px]">
-            {/* Seller ID at top INSIDE the card, like a header, styled */}
-            <div className="w-full absolute left-0 top-0 flex flex-row items-center justify-start px-6 py-3 border-b border-gray-100 z-10">
-                <span className="text-l font-semibold text-gray-700 tracking-normal">
-                    Satıcı ID: {product.sellerId}
-                </span>
-            </div>
-            <div className="grid grid-cols-7 w-full">
-                {/* Product Image */}
-                <div className="col-span-1 flex items-center justify-center w-32 h-40 flex-shrink-0 rounded-lg m-6 mt-16 bg-gray-100 self-center">
-                <img
-                    src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=facearea&w=400&h=400&q=80"
-                    alt={product.title}
-                    className="w-full h-full object-cover rounded-md"
-                />
+        <div className="group relative w-full max-w-4xl mx-auto bg-white rounded-2xl shadow-sm hover:shadow-md border border-gray-100 transition-all duration-300 overflow-hidden">
+            <div className="flex flex-col sm:flex-row h-full">
+                {/* Image Section */}
+                <div className="relative w-full sm:w-48 h-48 sm:h-auto flex-shrink-0 bg-gray-50">
+                    <img
+                        src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&h=400&q=80"
+                        alt={product.inventory.productDTO.title}
+                        className="w-full h-full object-cover mix-blend-multiply p-4"
+                    />
                 </div>
-                {/* Product Details */}
-                <div className="col-span-6 flex flex-col mt-16 mb-6 w-full">
-                    <div className="flex flex-col gap-1 items-start">
-                        <div className="text-base font-semibold text-gray-900 text-left">{product.title}</div>
-                        <p className="text-xs text-gray-600 line-clamp-2 mb-1 text-left">{product.description}</p>
+
+                {/* Content Section */}
+                <div className="flex flex-1 flex-col p-5 sm:p-6 justify-between">
+                    <div className="flex flex-col gap-3">
+                        {/* Header: Seller & Brand */}
+                        <div className="flex items-center justify-between text-xs text-gray-500">
+                            <div className="flex items-center gap-1.5 bg-gray-50 px-2.5 py-1 rounded-full border border-gray-100">
+                                <Store className="w-3.5 h-3.5 text-gray-400" />
+                                <span className="font-medium text-gray-600">
+                                    Satıcı: {product.inventory.sellerId}
+                                </span>
+                            </div>
+                        </div>
+
+                        {/* Title & Description */}
+                        <div>
+                            <h3 className="text-lg font-bold text-gray-900 leading-tight mb-1 group-hover:text-indigo-700 transition-colors">
+                                {product.inventory.productDTO.title}
+                            </h3>
+                            <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
+                                {product.inventory.productDTO.description || ""}
+                            </p>
+                        </div>
                     </div>
-                    <div className="grid grid-cols-2 gap-2 relative h-full">
-                        {/* Product count and +/- buttons */}
-                        <div className="flex flex-row items-center gap-2 absolute bottom-0 left-0">
+
+                    {/* Footer: Price & Actions */}
+                    <div className="flex items-end justify-between mt-6 pt-4 border-t border-gray-50">
+                        {/* Quantity Controls */}
+                        <div className="flex items-center gap-3 bg-gray-50 rounded-lg p-1 border border-gray-100">
                             <button
-                                className="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300 text-xl font-bold text-gray-800 transition flex items-center justify-center"
+                                className="w-8 h-8 flex items-center justify-center rounded-md bg-white text-gray-600 shadow-sm hover:text-indigo-600 hover:border-indigo-200 border border-transparent transition-all disabled:opacity-50"
                                 type="button"
-                                aria-label="Eksilt"
+                                aria-label="Decrease quantity"
+                                onClick={() => {
+                                    handleQuantityChange(quantity - 1);
+                                }}
                             >
-                                −
+                                <Minus className="w-4 h-4" />
                             </button>
-                            <span className="min-w-[30px] text-center text-md font-medium text-gray-900">
-                                1
+                            <span className="w-8 text-center font-semibold text-gray-900">
+                                {product.quantity}
                             </span>
                             <button
-                                className="px-2 py-1 rounded bg-gray-200 hover:bg-gray-300 text-xl font-bold text-gray-800 transition flex items-center justify-center"
+                                className="w-8 h-8 flex items-center justify-center rounded-md bg-white text-gray-600 shadow-sm hover:text-indigo-600 hover:border-indigo-200 border border-transparent transition-all"
                                 type="button"
-                                aria-label="Arttır"
+                                aria-label="Increase quantity"
+                                onClick={() => {
+                                    handleQuantityChange(quantity + 1);
+                                }}
                             >
-                                +
+                                <Plus className="w-4 h-4" />
                             </button>
                         </div>
-                        {/* Price aligned right and at bottom */}
-                        <div className="flex flex-col items-end justify-end absolute bottom-0 right-10">
-                            <span className="text-lg font-bold text-orange-700 mb-1 text-right">
-                                {product.price.toLocaleString("tr-TR", { style: "currency", currency: "TRY" })}
-                            </span>
+
+                        {/* Price & Remove */}
+                        <div className="flex flex-col items-end gap-2">
+                            <div className="text-xl font-bold text-gray-900">
+                                {product.inventory.price.toLocaleString("tr-TR", {
+                                    style: "currency",
+                                    currency: "TRY",
+                                })}
+                            </div>
+                            <button
+                                className="flex items-center gap-1.5 text-xs font-medium text-red-500 hover:text-red-600 hover:bg-red-50 px-2 py-1 rounded transition-colors"
+                                type="button"
+                            >
+                                <Trash2 className="w-3.5 h-3.5" />
+                                <span>Kaldır</span>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        </div>      
-    )
-}
+    );
+};
+
 export default ProductCartCard;
