@@ -5,10 +5,10 @@ import ProductService from "@/services/ProductService";
 
 export default async function Home() {
 
-  const productService=new ProductService()
-  const categoryService=new CategoryService()
+  const productService = new ProductService()
+  const categoryService = new CategoryService()
 
-  const [products,categories]=await Promise.all([
+  const [products, categories] = await Promise.all([
     productService.getAllDisplayProductsByCategoryId(2),
     categoryService.getParentCategoryWithSubcategory()
   ])
@@ -19,7 +19,7 @@ export default async function Home() {
     <div className="min-h-screen bg-white">
       <main>
         <div className="mb-[20px]">
-          <Banner/>
+          <Banner />
         </div>
         {/* Categories with their own swipers */}
         {categories.map((category, index) => (
@@ -31,7 +31,7 @@ export default async function Home() {
                 Tümünü Gör
               </a>
             </div>
-            
+
             {/* Product Swiper */}
             <ProductSwiper displayProducts={products} />
           </section>

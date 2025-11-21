@@ -1,8 +1,8 @@
 export interface DisplayProduct {
-  productId: string;
+  productId: number;
   title: string;
   description?: string;
-  brandName:string;
-  price:number;
-  sellerId:number;
+  brandName: string;
+  price: number;
+  sellerId: number;
 }
