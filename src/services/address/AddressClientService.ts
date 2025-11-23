@@ -1,4 +1,4 @@
-import { apiGet, apiPut } from "@/lib/clientApi";
+import { apiDelete, apiGet, apiPut } from "@/lib/clientApi";
 import { AddressDetail } from "@/models/address/AddressDetail";
 import { AddressDetailRequest } from "@/models/address/AddressDetailRequest";
 
@@ -14,5 +14,9 @@ export default class AddressClientService {
         console.log(address);
         const response: AddressDetail = await apiPut(this.API_URL + addressId, address);
         return response;
+    }
+
+    async deleteAddress(addressId: number) {
+        await apiDelete(this.API_URL + addressId);
     }
 }

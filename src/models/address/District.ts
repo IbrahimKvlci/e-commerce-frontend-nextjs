@@ -1,4 +1,4 @@
-interface District {
+export interface District {
     id: number;
     name: string;
     cityId: number;

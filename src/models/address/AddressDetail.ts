@@ -1,3 +1,8 @@
+import { Country } from "./Country";
+import { District } from "./District";
+import { City } from "./City";
+import { Neighborhood } from "./Neighborhood";
+
 export interface AddressDetail {
     id: number;
     addressTitle: string;

@@ -3,9 +3,11 @@
 import { AddressDetail } from "@/models/address/AddressDetail";
 import AddressClientService from "@/services/address/AddressClientService";
 import { Plus, MapPin, Phone, Edit2, Trash2, Home, Briefcase } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Addresses() {
+    const router = useRouter();
     const [addresses, setAddresses] = useState<AddressDetail[]>([]);
 
     useEffect(() => {
@@ -37,6 +39,13 @@ export default function Addresses() {
 
     };
 
+    const handleDelete = async (addressId: number) => {
+        const addressClientService = new AddressClientService();
+        await addressClientService.deleteAddress(addressId);
+        const response = await addressClientService.getAddressesOfCustomer();
+        setAddresses(response);
+    };
+
     return (
         <div className="space-y-6">
             <div className="bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden">
@@ -45,7 +54,7 @@ export default function Addresses() {
                         <h2 className="text-xl font-bold text-gray-900">Kayıtlı Adreslerim</h2>
                         <p className="text-sm text-gray-500 mt-1">Teslimat adreslerinizi yönetin ve düzenleyin.</p>
                     </div>
-                    <button className="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all">
+                    <button onClick={() => router.push('/profile/addresses/add-address')} className="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all">
                         <Plus className="h-4 w-4 mr-2" />
                         Yeni Adres Ekle
                     </button>
@@ -107,7 +116,7 @@ export default function Addresses() {
                                         Düzenle
                                     </button>
                                     <button
-                                        onClick={(e) => { e.stopPropagation(); }}
+                                        onClick={(e) => { handleDelete(address.id); e.stopPropagation(); }}
                                         className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-600 bg-white border border-gray-200 rounded-md hover:bg-red-50 hover:border-red-100 transition-colors"
                                     >
                                         <Trash2 className="h-3.5 w-3.5" />
