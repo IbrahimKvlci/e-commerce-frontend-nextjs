@@ -1,39 +1,40 @@
 "use client"
 
+import { AddressDetail } from "@/models/address/AddressDetail";
+import AddressClientService from "@/services/address/AddressClientService";
 import { Plus, MapPin, Phone, Edit2, Trash2, Home, Briefcase } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Addresses() {
-    const [addresses, setAddresses] = useState([
-        {
-            id: 1,
-            title: "Ev Adresim",
-            type: "home",
-            fullName: "Ahmet Yılmaz",
-            phone: "+90 555 123 45 67",
-            address: "Atatürk Mah. Cumhuriyet Cad. No: 123 D: 4",
-            district: "Kadıköy",
-            city: "İstanbul",
-            isDefault: true,
-        },
-        {
-            id: 2,
-            title: "İş Yeri",
-            type: "work",
-            fullName: "Ahmet Yılmaz",
-            phone: "+90 555 987 65 43",
-            address: "Maslak Mah. Büyükdere Cad. No: 45 Plaza B Blok Kat: 12",
-            district: "Sarıyer",
-            city: "İstanbul",
-            isDefault: false,
-        }
-    ]);
+    const [addresses, setAddresses] = useState<AddressDetail[]>([]);
 
-    const handleSetDefault = (id: number) => {
-        setAddresses(addresses.map(addr => ({
-            ...addr,
-            isDefault: addr.id === id
-        })));
+    useEffect(() => {
+        const fetchAddresses = async () => {
+            const addressClientService = new AddressClientService();
+            const response = await addressClientService.getAddressesOfCustomer();
+            setAddresses(response);
+        };
+        fetchAddresses();
+    }, [])
+
+    const handleSetDefault = async (clickedAddress: AddressDetail) => {
+        const addressClientService = new AddressClientService();
+        await addressClientService.updateAddress(clickedAddress.id, {
+            addressTitle: clickedAddress.addressTitle,
+            name: clickedAddress.name,
+            surname: clickedAddress.surname,
+            phone: clickedAddress.phone,
+            address: clickedAddress.address,
+            postalCode: clickedAddress.postalCode,
+            countryId: clickedAddress.country.id,
+            districtId: clickedAddress.district.id,
+            cityId: clickedAddress.city.id,
+            neighborhoodId: clickedAddress.neighborhood.id,
+            defaultAddress: true
+        });
+        const response = await addressClientService.getAddressesOfCustomer();
+        setAddresses(response);
+
     };
 
     return (
@@ -55,10 +56,10 @@ export default function Addresses() {
                         {addresses.map((address) => (
                             <div
                                 key={address.id}
-                                onClick={() => handleSetDefault(address.id)}
-                                className={`group relative flex flex-col bg-white rounded-xl border transition-all duration-200 cursor-pointer ${address.isDefault ? 'border-indigo-200 ring-1 ring-indigo-500/20 shadow-sm' : 'border-gray-200 hover:border-indigo-300 hover:shadow-md'}`}
+                                onClick={() => handleSetDefault(address)}
+                                className={`group relative flex flex-col bg-white rounded-xl border transition-all duration-200 cursor-pointer ${address.defaultAddress ? 'border-indigo-200 ring-1 ring-indigo-500/20 shadow-sm' : 'border-gray-200 hover:border-indigo-300 hover:shadow-md'}`}
                             >
-                                {address.isDefault && (
+                                {address.defaultAddress && (
                                     <div className="absolute -top-3 left-4">
                                         <span className="inline-flex items-center rounded-full bg-indigo-600 px-2.5 py-0.5 text-xs font-medium text-white shadow-sm ring-2 ring-white">
                                             Varsayılan
@@ -69,12 +70,8 @@ export default function Addresses() {
                                 <div className="p-5 flex-1">
                                     <div className="flex items-start justify-between mb-4">
                                         <div className="flex items-center gap-3">
-                                            <div className={`p-2 rounded-lg ${address.type === 'home' ? 'bg-blue-50 text-blue-600' : 'bg-orange-50 text-orange-600'}`}>
-                                                {address.type === 'home' ? <Home className="h-5 w-5" /> : <Briefcase className="h-5 w-5" />}
-                                            </div>
                                             <div>
-                                                <h3 className="font-semibold text-gray-900">{address.title}</h3>
-                                                <p className="text-xs text-gray-500 font-medium uppercase tracking-wide">{address.type === 'home' ? 'Ev' : 'İş'}</p>
+                                                <h3 className="font-semibold text-gray-900">{address.addressTitle}</h3>
                                             </div>
                                         </div>
                                     </div>
@@ -84,14 +81,14 @@ export default function Addresses() {
                                             <div className="w-5 flex justify-center">
                                                 <div className="h-1.5 w-1.5 rounded-full bg-gray-400"></div>
                                             </div>
-                                            {address.fullName}
+                                            {address.name + " " + address.surname}
                                         </div>
                                         <div className="flex items-start gap-3 text-sm text-gray-600">
                                             <MapPin className="h-4 w-4 text-gray-400 mt-0.5 flex-shrink-0" />
                                             <span className="leading-relaxed">
                                                 {address.address}
                                                 <br />
-                                                <span className="text-gray-500">{address.district} / {address.city}</span>
+                                                <span className="text-gray-500">{address.district.name} / {address.city.name}</span>
                                             </span>
                                         </div>
                                         <div className="flex items-center gap-3 text-sm text-gray-600">
