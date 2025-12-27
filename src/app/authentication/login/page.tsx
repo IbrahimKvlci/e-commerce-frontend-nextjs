@@ -1,20 +1,31 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AuthService from "@/services/auth/AuthService";
+import { useSearchParams } from "next/navigation";
 
 export default function LoginPage() {
+  const params = useSearchParams()
+
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const authService=new AuthService()
+  const authService = new AuthService()
+
+  useEffect(() => {
+    const reason = params.get("reason")
+    if (reason === "unauthorized") {
+      toast.error("Devam etmek için giriş yapmalısınız");
+    }
+  }, [params])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await authService.login({email,password}).then(() => {
+    await authService.login({ email, password }).then(() => {
       toast.success("Giriş yapıldı");
       window.location.href = "/";
     }).catch((error) => {
@@ -26,7 +37,6 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col justify-center py-3">
-      <ToastContainer />
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
           Hesabınıza Giriş Yapın

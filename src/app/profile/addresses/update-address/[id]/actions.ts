@@ -2,7 +2,7 @@
 
 import AddressServerService from "@/services/address/AddressServerService"
 
-export default async function addAddressAction(formData: FormData) {
+export default async function updateAddressAction(formData: FormData, id: number) {
     const data = Object.fromEntries(formData)
 
     if (!data.countryId || !data.cityId || !data.districtId || !data.neighborhoodId
@@ -13,7 +13,7 @@ export default async function addAddressAction(formData: FormData) {
     const addressServerService = new AddressServerService()
 
     try {
-        return await addressServerService.addAddress({
+        return await addressServerService.updateAddress(Number(id), {
             addressTitle: data.addressTitle.toString(),
             name: data.name.toString(),
             surname: data.surname.toString(),
@@ -28,7 +28,7 @@ export default async function addAddressAction(formData: FormData) {
         })
 
     } catch (error) {
-        console.error("Adres ekleme hatası:", error);
-        return { success: false, message: "Adres eklenirken bir hata oluştu." }
+        console.error("Adres güncellenirken hata oluştu:", error);
+        return { success: false, message: "Adres güncellenirken bir hata oluştu." }
     }
 }

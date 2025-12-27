@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { DisplayProduct } from "@/models/DisplayProduct";
 import ProductCardAddCartBtn from "./product/ProductCardAddCartBtn";
 import CartClientService from "@/services/CartClientService";
-import UserClientService from "@/services/UserClientService";
 
 interface ProductCardProps {
   product: DisplayProduct;
@@ -19,11 +18,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   useEffect(() => {
     const fetchCart = async () => {
       try {
-        const userService = new UserClientService();
         const cartService = new CartClientService();
-        const userId = await userService.getUserId();
-        const cartData = await cartService.getCartByCustomerId(userId);
-        setCart(cartData);
+        const cartDataResponse = await cartService.getCartOfCustomer();
+        setCart(cartDataResponse.data);
       } catch (error) {
         console.error("Failed to fetch cart data", error);
       }

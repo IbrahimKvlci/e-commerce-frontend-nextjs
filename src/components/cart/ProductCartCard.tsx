@@ -37,7 +37,7 @@ const ProductCartCard: React.FC<ProductCardProps> = ({ product }) => {
                 <div className="relative w-full sm:w-48 h-48 sm:h-auto flex-shrink-0 bg-gray-50">
                     <img
                         src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&h=400&q=80"
-                        alt={product.inventory.productDTO.title}
+                        alt={product.inventory.product.title}
                         className="w-full h-full object-cover mix-blend-multiply p-4"
                     />
                 </div>
@@ -58,10 +58,10 @@ const ProductCartCard: React.FC<ProductCardProps> = ({ product }) => {
                         {/* Title & Description */}
                         <div>
                             <h3 className="text-lg font-bold text-gray-900 leading-tight mb-1 group-hover:text-indigo-700 transition-colors">
-                                {product.inventory.productDTO.title}
+                                {product.inventory.product.title}
                             </h3>
                             <p className="text-sm text-gray-500 line-clamp-2 leading-relaxed">
-                                {product.inventory.productDTO.description || ""}
+                                {product.inventory.product.description || ""}
                             </p>
                         </div>
                     </div>

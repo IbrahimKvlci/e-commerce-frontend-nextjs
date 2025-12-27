@@ -1,20 +1,21 @@
-interface ProductDTO {
+interface Product {
     id: number;
     title: string;
     description: string;
 }
 
-interface Inventory {
+interface ProductInventory {
     id: number;
-    product: ProductDTO;
+    product: Product;
     quantity: number;
     sellerId: number;
     price: number;
 }
 
-interface CartProductItem {
+export interface OrderItem {
     id: number;
-    inventory: Inventory;
+    productInventory: ProductInventory;
     quantity: number;
+    unitPrice: number;
     totalPrice: number;
 }

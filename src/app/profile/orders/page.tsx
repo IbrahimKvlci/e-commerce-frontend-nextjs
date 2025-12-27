@@ -1,50 +1,21 @@
 import { Package, ChevronRight, Clock, CheckCircle, XCircle, Truck } from "lucide-react";
+import OrderServerService from "@/services/OrderServerService";
 
-export default function Orders() {
-    const orders = [
-        {
-            id: "ORD-2024-1001",
-            date: "24 Ekim 2024",
-            total: "₺129.99",
-            status: "Teslim Edildi",
-            items: 3,
-            image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-        },
-        {
-            id: "ORD-2024-0928",
-            date: "28 Eylül 2024",
-            total: "₺59.50",
-            status: "Hazırlanıyor",
-            items: 1,
-            image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-        },
-        {
-            id: "ORD-2024-0915",
-            date: "15 Eylül 2024",
-            total: "₺245.00",
-            status: "Kargolandı",
-            items: 2,
-            image: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-        },
-        {
-            id: "ORD-2024-0830",
-            date: "30 Ağustos 2024",
-            total: "₺89.99",
-            status: "İptal Edildi",
-            items: 1,
-            image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80"
-        }
-    ];
+export default async function Orders() {
+
+    const orderService = new OrderServerService();
+    const ordersResponse = await orderService.getOrdersOfCustomer();
+    const orders = ordersResponse.data;
 
     const getStatusColor = (status: string) => {
         switch (status) {
-            case "Teslim Edildi":
+            case "DELIVERED":
                 return "bg-green-50 text-green-700 ring-green-600/20";
-            case "Hazırlanıyor":
+            case "PROCESSING":
                 return "bg-blue-50 text-blue-700 ring-blue-600/20";
-            case "Kargolandı":
+            case "SHIPPED":
                 return "bg-indigo-50 text-indigo-700 ring-indigo-600/20";
-            case "İptal Edildi":
+            case "CANCELLED":
                 return "bg-red-50 text-red-700 ring-red-600/20";
             default:
                 return "bg-gray-50 text-gray-600 ring-gray-500/10";
@@ -53,13 +24,13 @@ export default function Orders() {
 
     const getStatusIcon = (status: string) => {
         switch (status) {
-            case "Teslim Edildi":
+            case "DELIVERED":
                 return <CheckCircle className="h-4 w-4 mr-1.5" />;
-            case "Hazırlanıyor":
+            case "PROCESSING":
                 return <Clock className="h-4 w-4 mr-1.5" />;
-            case "Kargolandı":
+            case "SHIPPED":
                 return <Truck className="h-4 w-4 mr-1.5" />;
-            case "İptal Edildi":
+            case "CANCELLED":
                 return <XCircle className="h-4 w-4 mr-1.5" />;
             default:
                 return null;
@@ -73,7 +44,6 @@ export default function Orders() {
                     <h2 className="text-xl font-bold text-gray-900">Sipariş Geçmişi</h2>
                     <p className="text-sm text-gray-500 mt-1">Son siparişlerin durumunu kontrol edin, iadeleri yönetin ve faturaları indirin.</p>
                 </div>
-
                 <div className="divide-y divide-gray-100">
                     {orders.map((order) => (
                         <div key={order.id} className="p-6 hover:bg-gray-50 transition-colors duration-200">

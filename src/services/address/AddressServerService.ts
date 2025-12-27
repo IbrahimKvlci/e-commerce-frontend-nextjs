@@ -1,19 +1,13 @@
-import { apiDelete, apiGet, apiPost, apiPut } from "@/lib/clientApi";
+import { apiDelete, apiGet, apiPost, apiPut } from "@/lib/serverApi";
 import { AddressDetail } from "@/models/address/AddressDetail";
 import { AddressDetailRequest } from "@/models/address/AddressDetailRequest";
 import { DataResponseModel } from "@/models/response/DataResponseModel";
-import { ResponseModel } from "@/models/response/ResponseModel";
 
-export default class AddressClientService {
+export default class AddressServerService {
     private API_URL = `${process.env.NEXT_PUBLIC_API_URL}/address/address-details`;
 
     async getAddressesOfCustomer(): Promise<DataResponseModel<AddressDetail[]>> {
         const response: DataResponseModel<AddressDetail[]> = await apiGet(this.API_URL + "/customer");
-        return response;
-    }
-
-    async getAddressDetailById(addressId: number): Promise<DataResponseModel<AddressDetail>> {
-        const response: DataResponseModel<AddressDetail> = await apiGet(this.API_URL + "/" + addressId);
         return response;
     }
 
@@ -22,9 +16,8 @@ export default class AddressClientService {
         return response;
     }
 
-    async deleteAddress(addressId: number): Promise<ResponseModel> {
-        const response: ResponseModel = await apiDelete(this.API_URL + "/" + addressId);
-        return response;
+    async deleteAddress(addressId: number) {
+        await apiDelete(this.API_URL + addressId);
     }
 
     async addAddress(address: AddressDetailRequest): Promise<DataResponseModel<AddressDetail>> {

@@ -1,12 +1,15 @@
 import ProductCartCard from "@/components/cart/ProductCartCard";
 import CartService from "@/services/CartService";
-import UserService from "@/services/UserService";
+import { redirect } from "next/navigation";
 
 export default async function CartPage() {
 
     const cartService = new CartService();
-    const userService = new UserService();
-    const cart = await cartService.getCartByCustomerId(await userService.getUserId());
+    const cartResponse = await cartService.getCartOfCustomer();
+    if (!cartResponse.success) {
+        return redirect('/authentication/login?reason=unauthorized');
+    }
+    const cart = cartResponse.data;
 
     return (
         <div className="container mx-auto px-4 py-8 max-w-7xl">

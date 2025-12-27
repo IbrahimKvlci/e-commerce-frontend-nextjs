@@ -5,6 +5,7 @@ import AddressClientService from "@/services/address/AddressClientService";
 import { Plus, MapPin, Phone, Edit2, Trash2, Home, Briefcase } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function Addresses() {
     const router = useRouter();
@@ -14,7 +15,7 @@ export default function Addresses() {
         const fetchAddresses = async () => {
             const addressClientService = new AddressClientService();
             const response = await addressClientService.getAddressesOfCustomer();
-            setAddresses(response);
+            setAddresses(response.data);
         };
         fetchAddresses();
     }, [])
@@ -35,15 +36,24 @@ export default function Addresses() {
             defaultAddress: true
         });
         const response = await addressClientService.getAddressesOfCustomer();
-        setAddresses(response);
+        setAddresses(response.data);
 
     };
 
     const handleDelete = async (addressId: number) => {
         const addressClientService = new AddressClientService();
-        await addressClientService.deleteAddress(addressId);
-        const response = await addressClientService.getAddressesOfCustomer();
-        setAddresses(response);
+        const response = await addressClientService.deleteAddress(addressId);
+        if (response.success) {
+            toast.success(response.message);
+        } else {
+            toast.error(response.message);
+        }
+        const res = await addressClientService.getAddressesOfCustomer();
+        setAddresses(res.data);
+    };
+
+    const handleUpdate = (addressId: number) => {
+        router.push(`/profile/addresses/update-address/${addressId}`);
     };
 
     return (
@@ -109,7 +119,7 @@ export default function Addresses() {
 
                                 <div className="px-5 py-3 bg-gray-50/50 border-t border-gray-100 rounded-b-xl flex items-center justify-end gap-3">
                                     <button
-                                        onClick={(e) => { e.stopPropagation(); }}
+                                        onClick={(e) => { handleUpdate(address.id); e.stopPropagation(); }}
                                         className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-700 bg-white border border-gray-200 rounded-md hover:bg-gray-50 hover:text-indigo-600 transition-colors"
                                     >
                                         <Edit2 className="h-3.5 w-3.5" />

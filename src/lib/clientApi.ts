@@ -7,13 +7,13 @@ async function apiRequest(url: string, options: RequestInit) {
     ...options,
   });
 
-  if (!response.ok) {
-    throw new Error(`${options.method || 'GET'} ${url} failed, status: ${response.status}`);
-  }
   if (response.status === 204) {
     return;
   }
-  return response.json();
+
+  const data = await response.json();
+
+  return data;
 }
 
 export const apiGet = (url: string) => apiRequest(url, { method: 'GET' });

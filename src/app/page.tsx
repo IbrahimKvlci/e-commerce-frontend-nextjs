@@ -13,8 +13,6 @@ export default async function Home() {
     categoryService.getParentCategoryWithSubcategory()
   ])
 
-
-
   return (
     <div className="min-h-screen bg-white">
       <main>
@@ -22,7 +20,7 @@ export default async function Home() {
           <Banner />
         </div>
         {/* Categories with their own swipers */}
-        {categories.map((category, index) => (
+        {categories.data.map((category, index) => (
           <section key={index} className="mb-12">
             {/* Category Header */}
             <div className="flex items-center justify-between mb-6">
@@ -33,7 +31,7 @@ export default async function Home() {
             </div>
 
             {/* Product Swiper */}
-            <ProductSwiper displayProducts={products} />
+            <ProductSwiper displayProducts={products.data} />
           </section>
         ))}
       </main>

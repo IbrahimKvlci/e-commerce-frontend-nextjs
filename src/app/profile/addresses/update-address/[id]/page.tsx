@@ -2,7 +2,7 @@
 
 import { ArrowLeft, Save } from "lucide-react";
 import { useRouter } from "next/navigation";
-import addAddressAction from "./actions";
+import updateAddressAction from "./actions";
 import { useEffect, useMemo, useState } from "react";
 import { Country } from "@/models/address/Country";
 import CountryClientService from "@/services/address/CountryClientService";
@@ -13,19 +13,50 @@ import { District } from "@/models/address/District";
 import NeighborhoodClientService from "@/services/address/NeighborhoodClientService";
 import { Neighborhood } from "@/models/address/Neighborhood";
 import { toast } from "react-toastify";
+import { useParams } from "next/navigation";
+import { AddressDetail } from "@/models/address/AddressDetail";
+import AddressClientService from "@/services/address/AddressClientService";
 
-export default function AddAddress() {
+export default function UpdateAddress() {
+
+    const { id } = useParams();
+
+
     const router = useRouter();
 
     const [countries, setCountries] = useState<Country[]>([])
     const [cities, setCities] = useState<City[]>([])
     const [districts, setDistricts] = useState<District[]>([])
     const [neighborhoods, setNeighborhoods] = useState<Neighborhood[]>([])
+    const [address, setAddress] = useState<AddressDetail | null>(null);
+
 
     const [selectedCountryId, setSelectedCountryId] = useState<number | null>(null);
     const [selectedCityId, setSelectedCityId] = useState<number | null>(null);
     const [selectedDistrictId, setSelectedDistrictId] = useState<number | null>(null);
     const [selectedNeighborhoodId, setSelectedNeighborhoodId] = useState<number | null>(null);
+    const [isDefaultAddress, setIsDefaultAddress] = useState<boolean>(false);
+
+
+    useEffect(() => {
+        const fetchAddress = async () => {
+            const addressClientService = new AddressClientService();
+            const response = await addressClientService.getAddressDetailById(Number(id));
+            if (!response.success) {
+                toast.error(response.message);
+            }
+            const data = response.data;
+            setAddress(data);
+            if (data) {
+                setSelectedCountryId(data.country.id);
+                setSelectedCityId(data.city.id);
+                setSelectedDistrictId(data.district.id);
+                setSelectedNeighborhoodId(data.neighborhood.id);
+                setIsDefaultAddress(data.defaultAddress);
+            }
+        };
+        fetchAddress();
+    }, []);
 
     useEffect(() => {
         const fetchCountries = async () => {
@@ -67,10 +98,10 @@ export default function AddAddress() {
     }, [selectedDistrictId]);
 
     const handleSubmit = async (formData: FormData) => {
-        const result = await addAddressAction(formData);
+        const result = await updateAddressAction(formData, Number(id));
         if (result?.success) {
             toast.success(result.message);
-            router.back();
+            router.replace("/profile/addresses");
         } else {
             toast.error(result?.message || "Bir hata oluştu.");
         }
@@ -101,6 +132,7 @@ export default function AddAddress() {
                                     Adres Başlığı
                                 </label>
                                 <input
+                                    defaultValue={address?.addressTitle}
                                     type="text"
                                     id="addressTitle"
                                     name="addressTitle"
@@ -115,6 +147,7 @@ export default function AddAddress() {
                                     Ad
                                 </label>
                                 <input
+                                    defaultValue={address?.name}
                                     type="text"
                                     id="name"
                                     name="name"
@@ -126,6 +159,7 @@ export default function AddAddress() {
                                     Soyad
                                 </label>
                                 <input
+                                    defaultValue={address?.surname}
                                     type="text"
                                     id="surname"
                                     name="surname"
@@ -139,6 +173,7 @@ export default function AddAddress() {
                                     Telefon
                                 </label>
                                 <input
+                                    defaultValue={address?.phone}
                                     type="tel"
                                     id="phone"
                                     name="phone"
@@ -153,6 +188,7 @@ export default function AddAddress() {
                                     Posta Kodu
                                 </label>
                                 <input
+                                    defaultValue={address?.postalCode}
                                     type="text"
                                     id="postalCode"
                                     name="postalCode"
@@ -166,6 +202,7 @@ export default function AddAddress() {
                                     Ülke
                                 </label>
                                 <select
+                                    value={selectedCountryId || ""}
                                     id="country"
                                     name="countryId"
                                     className="w-full rounded-lg bg-gray-50 border-transparent px-4 py-3 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200 text-sm"
@@ -184,6 +221,7 @@ export default function AddAddress() {
                                     İl
                                 </label>
                                 <select
+                                    value={selectedCityId || ""}
                                     id="city"
                                     name="cityId"
                                     className="w-full rounded-lg bg-gray-50 border-transparent px-4 py-3 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200 text-sm"
@@ -204,6 +242,7 @@ export default function AddAddress() {
                                     İlçe
                                 </label>
                                 <select
+                                    value={selectedDistrictId || ""}
                                     id="district"
                                     name="districtId"
                                     className="w-full rounded-lg bg-gray-50 border-transparent px-4 py-3 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200 text-sm"
@@ -222,6 +261,7 @@ export default function AddAddress() {
                                     Mahalle
                                 </label>
                                 <select
+                                    value={selectedNeighborhoodId || ""}
                                     id="neighborhood"
                                     name="neighborhoodId"
                                     className="w-full rounded-lg bg-gray-50 border-transparent px-4 py-3 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all duration-200 text-sm"
@@ -242,6 +282,7 @@ export default function AddAddress() {
                                     Açık Adres
                                 </label>
                                 <textarea
+                                    defaultValue={address?.address}
                                     id="address"
                                     name="address"
                                     rows={3}
@@ -257,6 +298,8 @@ export default function AddAddress() {
                                         id="defaultAddress"
                                         name="defaultAddress"
                                         type="checkbox"
+                                        checked={isDefaultAddress}
+                                        onChange={(e) => setIsDefaultAddress(e.target.checked)}
                                         className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                                     />
                                     <label htmlFor="defaultAddress" className="ml-2 block text-sm text-gray-900">
