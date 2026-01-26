@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from "react";
 import CartService from "@/services/CartClientService";
 import { useCheckout } from "@/context/CheckoutContext";
+import CheckoutClientService from "@/services/checkout/CheckoutClientService";
 
 export default function CheckoutSummary() {
     const [cart, setCart] = useState<Cart | null>(null);
@@ -12,11 +13,18 @@ export default function CheckoutSummary() {
     const { isAddressValid, isPaymentValid } = useCheckout();
     const { creditCardCheckout } = useCheckout();
 
+    const checkoutService = new CheckoutClientService();
 
     const handlePayment = async () => {
         if (!isAccepted) return;
         setProcessing(true);
         console.log(creditCardCheckout);
+        const response = await checkoutService.initiate3DCheckout(creditCardCheckout);
+        if (response.success && response.data) {
+            document.open();
+            document.write(response.data.htmlResponse);
+            document.close();
+        }
         setProcessing(false);
     };
 
@@ -34,6 +42,7 @@ export default function CheckoutSummary() {
 
         fetchCart();
     }, []);
+
 
     if (loading) {
         return (
