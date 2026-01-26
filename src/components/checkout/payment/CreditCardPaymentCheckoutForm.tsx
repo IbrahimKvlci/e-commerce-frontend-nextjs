@@ -22,10 +22,11 @@ export default function CreditCardPaymentCheckout() {
         // Sync with global state
         if (isCardNumberValid || isExpiryValid || isCvvValid || isNameValid) {
             const [month, year] = expiryDate.includes('/') ? expiryDate.split('/') : ['', ''];
+            const cardNumberField = (cardNumber.replace(/\s/g, ""));
 
             setCreditCardCheckout(prev => ({
                 ...prev,
-                cardNumber: cardNumber,
+                cardNumber: cardNumberField,
                 cardExpireDateYear: year,
                 cardExpiteDateMonth: month,
                 cardCVV: cvv,
