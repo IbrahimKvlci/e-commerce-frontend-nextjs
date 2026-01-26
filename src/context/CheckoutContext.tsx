@@ -8,8 +8,8 @@ interface CheckoutContextType {
     setAddressValid: (valid: boolean) => void;
     isPaymentValid: boolean;
     setPaymentValid: (valid: boolean) => void;
-    creditCardCheckout: Partial<CreditCardCheckout> | null;
-    setCreditCardCheckout: Dispatch<SetStateAction<Partial<CreditCardCheckout> | null>>;
+    creditCardCheckout: CreditCardCheckout;
+    setCreditCardCheckout: Dispatch<SetStateAction<CreditCardCheckout>>;
 }
 
 const CheckoutContext = createContext<CheckoutContextType | undefined>(undefined);
@@ -17,7 +17,7 @@ const CheckoutContext = createContext<CheckoutContextType | undefined>(undefined
 export function CheckoutProvider({ children }: { children: ReactNode }) {
     const [isAddressValid, setAddressValid] = useState(false);
     const [isPaymentValid, setPaymentValid] = useState(false);
-    const [creditCardCheckout, setCreditCardCheckout] = useState<Partial<CreditCardCheckout> | null>(null);
+    const [creditCardCheckout, setCreditCardCheckout] = useState<CreditCardCheckout>({} as CreditCardCheckout);
 
     return (
         <CheckoutContext.Provider value={{ isAddressValid, setAddressValid, isPaymentValid, setPaymentValid, creditCardCheckout, setCreditCardCheckout }}>
