@@ -5,7 +5,7 @@ export interface Order {
     orderNumber: string;
     customerId: number;
     customerName: string;
-    status: string;
+    status: 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED' | 'CANCELED';
     totalAmount: number;
     currencyCode: string;
     installCount: number;
