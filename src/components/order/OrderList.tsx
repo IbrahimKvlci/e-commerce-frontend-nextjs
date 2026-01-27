@@ -56,49 +56,90 @@ export default function OrderList({ initialOrders }: { initialOrders: Order[] })
     };
 
     return (
-        <div>
-            <div className="divide-y divide-gray-100">
+        <div className="space-y-8">
+            <div className="space-y-6">
                 {orders.map((order) => (
-                    <div key={order.id} className="p-6 hover:bg-gray-50 transition-colors duration-200">
-                        <div className="flex items-center justify-between flex-wrap gap-4">
-                            <div className="flex items-start gap-4">
-                                <div className="h-20 w-20 flex-shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
-                                    <img
-                                        src={order.image}
-                                        alt={`Order ${order.id}`}
-                                        className="h-full w-full object-cover object-center"
-                                    />
-                                </div>
-                                <div>
-                                    <div className="flex items-center gap-2 mb-1">
-                                        <h3 className="text-base font-semibold text-gray-900">{order.id}</h3>
-                                        <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ring-1 ring-inset ${getStatusColor(order.status)}`}>
+                    <div key={order.id} className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-300">
+                        {/* Order Header */}
+                        <div className="bg-gray-50/50 px-6 py-4 border-b border-gray-100">
+                            <div className="flex flex-wrap items-center justify-between gap-4">
+                                <div className="flex flex-wrap gap-x-8 gap-y-2">
+                                    <div>
+                                        <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Sipariş No</p>
+                                        <p className="text-sm font-semibold text-gray-900">#{order.orderNumber || order.id}</p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Tarih</p>
+                                        <p className="text-sm font-semibold text-gray-900">
+                                            {new Date(order.createdAt).toLocaleDateString("tr-TR", {
+                                                year: 'numeric',
+                                                month: 'long',
+                                                day: 'numeric'
+                                            })}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-gray-500 font-medium uppercase tracking-wider">Toplam</p>
+                                        <p className="text-sm font-semibold text-gray-900">
+                                            {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: order.currencyCode || 'TRY' }).format(order.totalAmount)}
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p className="text-xs text-gray-500 font-medium uppercase tracking-wider mb-1">Durum</p>
+                                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ring-1 ring-inset ${getStatusColor(order.status)}`}>
                                             {getStatusIcon(order.status)}
                                             {order.status}
                                         </span>
                                     </div>
-                                    <p className="text-sm text-gray-500 mb-1">Sipariş Tarihi: {order.date}</p>
-                                    <p className="text-sm font-medium text-gray-900">
-                                        {order.total} <span className="text-gray-400 font-normal mx-1">•</span> {order.items} {order.items === 1 ? 'Ürün' : 'Ürün'}
-                                    </p>
+                                </div>
+
+                                <div className="flex items-center gap-3">
+                                    <button className="inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all">
+                                        Detaylar
+                                    </button>
+                                    <button className="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all">
+                                        Kargo Takip
+                                    </button>
                                 </div>
                             </div>
+                        </div>
 
-                            <div className="flex items-center gap-3 w-full sm:w-auto">
-                                <button className="flex-1 sm:flex-none items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all">
-                                    Detayları Gör
-                                </button>
-                                <button className="flex-1 sm:flex-none items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all">
-                                    Kargo Takip
-                                </button>
-                            </div>
+                        {/* Order Items */}
+                        <div className="divide-y divide-gray-100">
+                            {order.orderItems?.map((item) => (
+                                <div key={item.id} className="p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 hover:bg-gray-50/50 transition-colors">
+                                    <div className="flex items-center gap-4">
+                                        <div className="h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm flex items-center justify-center text-gray-400 group-hover:text-indigo-500 transition-colors">
+                                            <Package className="h-8 w-8" strokeWidth={1.5} />
+                                        </div>
+                                        <div>
+                                            <h4 className="text-sm font-medium text-gray-900 mb-1">{item.productInventory.product.title}</h4>
+                                            <p className="text-sm text-gray-500 line-clamp-1 max-w-md">{item.productInventory.product.description}</p>
+                                            <div className="mt-1 flex items-center gap-2 text-xs text-gray-500 sm:hidden">
+                                                <span>{item.quantity} Adet</span>
+                                                <span>•</span>
+                                                <span>{new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(item.unitPrice)}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="hidden sm:block text-right">
+                                        <p className="text-sm font-medium text-gray-900">
+                                            {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(item.totalPrice)}
+                                        </p>
+                                        <p className="text-xs text-gray-500">
+                                            {item.quantity} adet x {new Intl.NumberFormat('tr-TR', { style: 'currency', currency: 'TRY' }).format(item.unitPrice)}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 ))}
             </div>
-            {/* Load More Butonu */}
+
+            {/* Load More Button */}
             {hasMore && orders.length > 0 && (
-                <div className="w-full flex justify-center pt-2 pb-2 border-t border-gray-100">
+                <div className="w-full flex justify-center pt-4 pb-2">
                     <button
                         onClick={loadMore}
                         disabled={loading}
@@ -124,7 +165,7 @@ export default function OrderList({ initialOrders }: { initialOrders: Order[] })
                 </div>
             )}
 
-            {/* Empty State (Hidden by default, shown if no orders) */}
+            {/* Empty State */}
             {orders.length === 0 && (
                 <div className="text-center py-12">
                     <Package className="mx-auto h-12 w-12 text-gray-400" />
