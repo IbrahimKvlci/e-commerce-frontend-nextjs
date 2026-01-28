@@ -5,6 +5,7 @@ import Link from "next/link";
 import { registerCustomer } from "./action";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import { useRegisterStore } from "@/stores/useRegisterStore";
 
 export default function Register() {
     const router = useRouter();
@@ -12,12 +13,15 @@ export default function Register() {
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [state, formAction] = useActionState(registerCustomer, null);
 
+    const setEmail = useRegisterStore((state) => state.setEmail);
+
     useEffect(() => {
         if (state?.success) {
-            toast.success("Kayıt başarılı!");
-            router.push("/authentication/login");
+            toast.success("Email adresinize doğrulama kodu gönderildi!");
+            setEmail(state.data.email)
+            router.push("/authentication/register/verify-code");
         }
-        if (state?.message) {
+        else if (state?.message) {
             toast.error(state.message);
         }
     }, [state]);
