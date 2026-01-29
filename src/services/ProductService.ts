@@ -9,4 +9,6 @@ export default class ProductService {
         const products: DataResponseModel<DisplayProduct[]> = await apiGet(`${this.API_URL}/category/${id}/displayProducts`)
         return products;
     }
+
+
 }
