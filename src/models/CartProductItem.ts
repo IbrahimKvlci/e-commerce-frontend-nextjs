@@ -2,6 +2,7 @@ interface ProductDTO {
     id: number;
     title: string;
     description: string;
+    imagesUrl: string[];
 }
 
 interface Inventory {

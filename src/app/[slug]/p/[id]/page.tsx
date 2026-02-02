@@ -3,6 +3,7 @@ import { ChevronRight, Heart, Minus, Plus, RotateCcw, Share2, ShieldCheck, Shopp
 import { getDisplayInventoryByProductIdAndSellerId } from "./action";
 import { formatPrice } from "@/utils/formatters";
 import AddToCartBtn from "./components/AddToCartBtn";
+import ProductImageGallery from "./components/ProductImageGallery";
 
 interface PageProps {
     params: {
@@ -69,37 +70,7 @@ export default async function ProductPage(props: PageProps) {
                 <div className="lg:grid lg:grid-cols-2 lg:gap-x-16 lg:items-start">
 
                     {/* Left Column: Image Gallery */}
-                    <div className="flex flex-col-reverse lg:flex-row gap-6">
-                        {/* Thumbnails (Vertical on desktop) */}
-                        <div className="flex lg:flex-col gap-4 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0">
-                            {inventory.inventoryDTO.productDTO.imagesUrl.map((image, index) => (
-                                <button key={index} className={`relative flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${index === 0 ? 'border-neutral-900' : 'border-transparent hover:border-neutral-200'}`}>
-                                    <img
-                                        src={image}
-                                        alt={`Thumbnail ${index}`}
-                                        className="w-full h-full object-cover"
-                                    />
-                                </button>
-                            ))}
-                        </div>
-
-                        {/* Main Image */}
-                        <div className="relative w-full aspect-square bg-neutral-100 rounded-3xl overflow-hidden group">
-                            <img
-                                src={inventory.inventoryDTO.productDTO.imagesUrl[0]}
-                                alt="SonicMaster Pro Headphones"
-                                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                            />
-                            <div className="absolute top-4 right-4 flex flex-col gap-3">
-                                <button className="p-3 bg-white/90 backdrop-blur-md rounded-full text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors shadow-sm">
-                                    <Heart className="w-5 h-5" />
-                                </button>
-                                <button className="p-3 bg-white/90 backdrop-blur-md rounded-full text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors shadow-sm">
-                                    <Share2 className="w-5 h-5" />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                    <ProductImageGallery imagesUrl={inventory.inventoryDTO.productDTO.imagesUrl} />
 
                     {/* Right Column: Product Info */}
                     <div className="mt-10 lg:mt-0 lg:sticky lg:top-8">

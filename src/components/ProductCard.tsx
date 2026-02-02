@@ -5,13 +5,13 @@ import { DisplayProduct } from "@/models/DisplayProduct";
 import ProductCardAddCartBtn from "./product/ProductCardAddCartBtn";
 import CartClientService from "@/services/CartClientService";
 import { formatPrice } from "@/utils/formatters";
+import { PLACEHOLDER_IMAGE_URL } from "@/utils/constants";
 
 interface ProductCardProps {
   product: DisplayProduct;
 }
 
-const placeholderImg =
-  "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=facearea&w=400&h=400&q=80";
+const placeholderImg = PLACEHOLDER_IMAGE_URL;
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
   const [cart, setCart] = useState<Cart | null>(null);

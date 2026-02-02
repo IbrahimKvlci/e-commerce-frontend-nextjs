@@ -4,6 +4,7 @@ import { Minus, Plus, Trash2, Store } from "lucide-react";
 import CartItemService from "@/services/CartItemService";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { PLACEHOLDER_IMAGE_URL } from "@/utils/constants";
 
 interface ProductCardProps {
     product: CartProductItem;
@@ -14,6 +15,8 @@ const ProductCartCard: React.FC<ProductCardProps> = ({ product }) => {
     const cartItemService = new CartItemService();
     const router = useRouter();
     const [quantity, setQuantity] = useState(product.quantity);
+
+    const placeholderImage = PLACEHOLDER_IMAGE_URL;
 
     const handleQuantityChange = async (newQuantity: number) => {
         if (newQuantity <= 0) {
@@ -36,7 +39,7 @@ const ProductCartCard: React.FC<ProductCardProps> = ({ product }) => {
                 {/* Image Section */}
                 <div className="relative w-full sm:w-48 h-48 sm:h-auto flex-shrink-0 bg-gray-50">
                     <img
-                        src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=400&h=400&q=80"
+                        src={product.inventory.product.imagesUrl[0] ?? placeholderImage}
                         alt={product.inventory.product.title}
                         className="w-full h-full object-cover mix-blend-multiply p-4"
                     />
