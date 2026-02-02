@@ -5,4 +5,5 @@ export interface DisplayProduct {
   brandName: string;
   price: number;
   sellerId: number;
+  imagesUrl: string[];
 }

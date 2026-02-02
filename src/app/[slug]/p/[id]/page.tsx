@@ -72,11 +72,11 @@ export default async function ProductPage(props: PageProps) {
                     <div className="flex flex-col-reverse lg:flex-row gap-6">
                         {/* Thumbnails (Vertical on desktop) */}
                         <div className="flex lg:flex-col gap-4 overflow-x-auto lg:overflow-visible pb-2 lg:pb-0">
-                            {[1, 2, 3, 4].map((i) => (
-                                <button key={i} className={`relative flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${i === 1 ? 'border-neutral-900' : 'border-transparent hover:border-neutral-200'}`}>
+                            {inventory.inventoryDTO.productDTO.imagesUrl.map((image, index) => (
+                                <button key={index} className={`relative flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden border-2 transition-all ${index === 0 ? 'border-neutral-900' : 'border-transparent hover:border-neutral-200'}`}>
                                     <img
-                                        src={`https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=150&q=80`}
-                                        alt={`Thumbnail ${i}`}
+                                        src={image}
+                                        alt={`Thumbnail ${index}`}
                                         className="w-full h-full object-cover"
                                     />
                                 </button>
@@ -86,7 +86,7 @@ export default async function ProductPage(props: PageProps) {
                         {/* Main Image */}
                         <div className="relative w-full aspect-square bg-neutral-100 rounded-3xl overflow-hidden group">
                             <img
-                                src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=1000&q=80"
+                                src={inventory.inventoryDTO.productDTO.imagesUrl[0]}
                                 alt="SonicMaster Pro Headphones"
                                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                             />

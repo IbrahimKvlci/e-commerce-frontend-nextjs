@@ -40,7 +40,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
       <a href={`${productTitleForUrl}/p/${product.productId}?seller=${product.sellerId}`}>
         <div className="relative w-full aspect-[3/4] bg-gray-100 flex-shrink-0">
           <img
-            src={placeholderImg}
+            src={product.imagesUrl.length > 0 ? product.imagesUrl[0] : placeholderImg}
             alt={product.title}
             className="w-full h-full object-cover object-center transition-transform duration-200 group-hover:scale-105"
             loading="lazy"

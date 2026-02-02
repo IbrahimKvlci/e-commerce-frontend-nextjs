@@ -16,6 +16,7 @@ interface ProductDTO {
     categoryDTO: CategoryDTO;
     brandDTO: BrandDTO;
     featured: boolean;
+    imagesUrl: string[];
 }
 
 interface InventoryDTO {
