@@ -10,5 +10,9 @@ export default class ProductService {
         return products;
     }
 
+    async getProductKeywordSuggestions(prefix: string): Promise<DataResponseModel<string[]>> {
+        const suggestions: DataResponseModel<string[]> = await apiGet(`${this.API_URL}/search/suggestions`, { prefix })
+        return suggestions;
+    }
 
 }
