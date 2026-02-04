@@ -2,23 +2,34 @@
 
 import { getSuggestions } from "./action"
 import { Search, X } from "lucide-react"
+import { useRouter } from "next/navigation";
 import { useState } from "react"
 
 export default function SearchBar() {
 
+    const router = useRouter();
     const [suggestions, setSuggestions] = useState<string[]>([]);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
     const onSearchBarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.value.length > 1) {
             const suggestions = await getSuggestions(e.target.value);
             if (suggestions.success) {
                 setSuggestions(suggestions.data);
+                setIsDropdownOpen(true);
             }
         }
         else {
             setSuggestions([]);
+            setIsDropdownOpen(false);
         }
     }
+
+    const onSuggestionClick = (suggestion: string) => {
+        router.push(`/search?s=${suggestion}`);
+        setIsDropdownOpen(false);
+    }
+
     return (
         <div className="flex-1 flex justify-center px-8 z-50">
             <div className="w-full max-w-md relative">
@@ -33,7 +44,7 @@ export default function SearchBar() {
                 </div>
 
                 {/* Search Results Dropdown */}
-                {suggestions.length > 0 && (
+                {isDropdownOpen && suggestions.length > 0 && (
                     <div className="absolute top-full left-0 w-full mt-2 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden z-50">
                         <div className="p-2">
 
@@ -41,7 +52,7 @@ export default function SearchBar() {
                             <div className="text-xs font-semibold text-gray-500 mb-2 px-2 uppercase tracking-wider">Sonuçlar</div>
                             <ul className="flex flex-col">
                                 {suggestions.map((suggestion, index) => (
-                                    <li key={index} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors group">
+                                    <li onClick={() => onSuggestionClick(suggestion)} key={index} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg cursor-pointer transition-colors group">
                                         <div className="flex-1 min-w-0">
                                             <p className="text-sm font-medium text-gray-900 truncate group-hover:text-blue-600">{suggestion}</p>
                                         </div>

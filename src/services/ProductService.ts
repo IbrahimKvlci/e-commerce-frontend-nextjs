@@ -15,4 +15,9 @@ export default class ProductService {
         return suggestions;
     }
 
+    async searchProducts(keyword: string): Promise<DataResponseModel<DisplayProduct[]>> {
+        const products: DataResponseModel<DisplayProduct[]> = await apiGet(`${this.API_URL}/search/ranking?searchTerm=${keyword}`)
+        return products;
+    }
+
 }
