@@ -24,7 +24,10 @@ async function apiRequest(url: string, options: RequestInit) {
 
 export const apiGet = (url: string, params: any = {}) => {
   const paramsString = new URLSearchParams(params).toString();
-  return apiRequest(url + "?" + paramsString, { method: 'GET' });
+  if (paramsString) {
+    return apiRequest(url + "?" + paramsString, { method: 'GET' });
+  }
+  return apiRequest(url, { method: 'GET' });
 }
 export const apiPost = (url: string, data: any) =>
   apiRequest(url, { method: 'POST', body: JSON.stringify(data) });
