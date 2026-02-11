@@ -1,5 +1,7 @@
-import { apiGet } from "@/lib/serverApi";
+import { apiGet, apiPost } from "@/lib/serverApi";
 import { DisplayProduct } from "@/models/DisplayProduct";
+import { ProductSearch } from "@/models/ProductSearch";
+import { ProductSearchResponse } from "@/models/ProductSearchResponse";
 import { DataResponseModel } from "@/models/response/DataResponseModel";
 
 export default class ProductService {
@@ -15,8 +17,8 @@ export default class ProductService {
         return suggestions;
     }
 
-    async searchProducts(keyword: string): Promise<DataResponseModel<DisplayProduct[]>> {
-        const products: DataResponseModel<DisplayProduct[]> = await apiGet(`${this.API_URL}/search/ranking?searchTerm=${keyword}`)
+    async searchProducts(productSearch: ProductSearch): Promise<DataResponseModel<ProductSearchResponse>> {
+        const products: DataResponseModel<ProductSearchResponse> = await apiPost(`${this.API_URL}/search`, productSearch)
         return products;
     }
 
