@@ -19,6 +19,7 @@ export default function Filter({ categories, attributes }: FilterProps) {
     const searchParams = useSearchParams();
 
     const [selectedAttributes, setSelectedAttributes] = useState<Attribute[]>(attributes);
+    const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
 
     const handleAttributeChange = (key: string, value: string, isChecked: boolean) => {
         setSelectedAttributes((prev) => {
@@ -41,12 +42,30 @@ export default function Filter({ categories, attributes }: FilterProps) {
         });
     };
 
+    const handleCategoryChange = (categoryId: number) => {
+        setSelectedCategory(categoryId);
+    };
+
+
+    useEffect(() => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (!selectedCategory) {
+            params.delete("category");
+            router.push(`/search?${params.toString()}`);
+            return;
+        }
+        console.log("Selected category:", selectedCategory);
+        const jsonString = JSON.stringify(selectedCategory);
+        const encodedJson = encodeURIComponent(jsonString);
+        params.set("category", encodedJson);
+        router.push(`/search?${params.toString()}`);
+    }, [selectedCategory]);
 
 
 
 
     useEffect(() => {
-        const currentSearchTerm = searchParams.get("s");
+        const params = new URLSearchParams(searchParams.toString());
         const isSelected = selectedAttributes.some((item) => {
             return item.values.some((v) => {
                 console.log("Value selected:", v.isSelected);
@@ -54,12 +73,15 @@ export default function Filter({ categories, attributes }: FilterProps) {
             });
         });
         if (!isSelected) {
-            router.push(`/search?s=${currentSearchTerm}`);
+            params.delete("attributes");
+            router.push(`/search?${params.toString()}`);
+
             return;
         }
         const jsonString = JSON.stringify(selectedAttributes);
         const encodedJson = encodeURIComponent(jsonString);
-        router.push(`/search?s=${currentSearchTerm}&attributes=${encodedJson}`);
+        params.set("attributes", encodedJson);
+        router.push(`/search?${params.toString()}`);
     }, [selectedAttributes]);
 
     return (
@@ -74,13 +96,9 @@ export default function Filter({ categories, attributes }: FilterProps) {
                 <div className="space-y-3">
                     {categories.map((category) => (
                         <label key={category.id} className="flex items-center gap-3 cursor-pointer group">
-                            <div className="relative flex items-center">
-                                <input type="checkbox" className="peer w-5 h-5 border-2 border-gray-300 rounded text-blue-600 focus:ring-blue-500/20 transition-all checked:border-blue-600 checked:bg-blue-600 appearance-none" />
-                                <svg className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-3.5 h-3.5 text-white opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none" viewBox="0 0 14 14" fill="none">
-                                    <path d="M3 8L6 11L11 3.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                                </svg>
-                            </div>
-                            <span className="text-gray-600 group-hover:text-blue-600 transition-colors">{category.name}</span>
+                            <button className="text-gray-700 hover:text-blue-600 cursor-pointer transition-colors" onClick={(e) => handleCategoryChange(category.id)} >
+                                {category.name}
+                            </button>
                         </label>
                     ))}
                 </div>

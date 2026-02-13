@@ -12,11 +12,13 @@ export default async function SearchPage({ searchParams }: Props) {
 
     const params = await searchParams;
     const keyword = params.s;
+    const categoryId = Number(params.category);
     const attributeFromParams = params.attributes ? JSON.parse(decodeURIComponent(params.attributes)) : [];
 
     const productSearch: ProductSearch = {
         searchTerm: keyword,
-        filters: attributeFromParams
+        filters: attributeFromParams,
+        categoryIds: categoryId ? [categoryId] : []
     }
 
     const productsResponse = await searchProducts(productSearch);
@@ -50,7 +52,7 @@ export default async function SearchPage({ searchParams }: Props) {
                             </button>
                         </div>
 
-                        <Filter categories={categories} attributes={attributes} />
+                        <Filter key={params.category} categories={categories} attributes={attributes} />
                     </aside>
 
                     {/* Main Content */}

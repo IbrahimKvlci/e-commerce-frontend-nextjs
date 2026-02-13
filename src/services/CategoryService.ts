@@ -20,4 +20,9 @@ export default class CategoryService {
         const categories: DataResponseModel<CategorySubcategory[]> = await apiGet(`${this.API_URL}/parentsWithSubcategories`)
         return categories;
     }
+
+    async getCategoryById(id: number): Promise<DataResponseModel<Category>> {
+        const category: DataResponseModel<Category> = await apiGet(`${this.API_URL}/${id}`)
+        return category;
+    }
 }
