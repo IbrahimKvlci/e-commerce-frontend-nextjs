@@ -1,0 +1,24 @@
+"use client"
+
+import { useRouter, useSearchParams } from "next/navigation"
+
+export default function PageButton({ page }: { page: number }) {
+
+    const router = useRouter();
+    const searchParams = useSearchParams();
+
+    const handlePage = () => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (page === 1) {
+            params.delete("page");
+        } else {
+            params.set("page", page.toString());
+        }
+        router.push(`/search?${params.toString()}`);
+    }
+
+
+    return (
+        <button onClick={() => handlePage()} className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-black transition-colors">{page}</button>
+    )
+}

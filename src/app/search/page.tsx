@@ -3,6 +3,8 @@ import ProductCard from './components/ProductCard';
 import { ProductSearch } from '@/models/ProductSearch';
 import { searchProducts } from './action';
 import Filter from './components/Filter';
+import PageButton from './components/PageButton';
+import PageArrowButton from './components/PageArrowButton';
 
 type Props = {
     searchParams: Promise<{ [key: string]: string }>
@@ -15,6 +17,7 @@ export default async function SearchPage({ searchParams }: Props) {
     const categoryId = Number(params.category);
     const minPrice = params.minPrice ? Number(params.minPrice) : undefined;
     const maxPrice = params.maxPrice ? Number(params.maxPrice) : undefined;
+    const page = params.page ? Number(params.page) : 1;
     const attributeFromParams = params.attributes ? JSON.parse(decodeURIComponent(params.attributes)) : [];
 
     const productSearch: ProductSearch = {
@@ -25,15 +28,19 @@ export default async function SearchPage({ searchParams }: Props) {
         categoryIds: categoryId ? [categoryId] : []
     }
 
-    const productsResponse = await searchProducts(productSearch);
+    const productsResponse = await searchProducts(productSearch, page);
 
     if (!productsResponse.success) {
         return <div>Error: {productsResponse.message}</div>
     }
 
-    const products = productsResponse.data.products;
+    const products = productsResponse.data.products.content;
     const categories = productsResponse.data.categories;
     const attributes = productsResponse.data.attributes;
+    const totalPages = productsResponse.data.products.totalPages + 10;
+    const totalElements = productsResponse.data.products.totalElements;
+
+
 
 
 
@@ -102,17 +109,35 @@ export default async function SearchPage({ searchParams }: Props) {
                         {/* Pagination Mockup */}
                         <div className="mt-12 flex justify-center">
                             <div className="flex items-center gap-2">
-                                <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-black transition-colors">
-                                    <ChevronDown className="w-5 h-5 rotate-90" />
-                                </button>
-                                <button className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-600 text-white font-semibold shadow-lg shadow-blue-600/20">1</button>
-                                <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors font-medium">2</button>
-                                <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors font-medium">3</button>
-                                <span className="text-gray-400">...</span>
-                                <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 hover:text-blue-600 transition-colors font-medium">8</button>
-                                <button className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-black transition-colors">
-                                    <ChevronDown className="w-5 h-5 -rotate-90" />
-                                </button>
+                                {page > 1 && (
+                                    <PageArrowButton page={page - 1} direction="left" />
+                                )}
+                                {
+                                    <>
+                                        {page > 2 && (
+                                            <>
+                                                <PageButton key={1} page={1} />
+                                                <p>...</p>
+                                            </>
+                                        )}
+                                        {page > 1 && (
+                                            <PageButton key={page - 1} page={page - 1} />
+                                        )}
+                                        <button key={page} className="w-10 h-10 flex items-center justify-center rounded-lg bg-blue-600 border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-black transition-colors">{page}</button>
+                                        {Array.from({ length: page <= totalPages - 2 ? 2 : totalPages - page }, (_, index) => index + 1).map((p) => (
+                                            <PageButton key={p} page={page + p} />
+                                        ))}
+                                        {page < totalPages - 2 && (
+                                            <>
+                                                <p>...</p>
+                                                <PageButton key={totalPages} page={totalPages} />
+                                            </>
+                                        )}
+                                    </>
+                                }
+                                {page < totalPages && (
+                                    <PageArrowButton page={page + 1} direction="right" />
+                                )}
                             </div>
                         </div>
                     </main>
