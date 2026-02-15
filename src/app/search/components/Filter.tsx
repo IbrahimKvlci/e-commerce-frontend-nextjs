@@ -20,6 +20,8 @@ export default function Filter({ categories, attributes }: FilterProps) {
 
     const [selectedAttributes, setSelectedAttributes] = useState<Attribute[]>(attributes);
     const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
+    const [minPrice, setMinPrice] = useState<number | null>(null);
+    const [maxPrice, setMaxPrice] = useState<number | null>(null);
 
     const handleAttributeChange = (key: string, value: string, isChecked: boolean) => {
         setSelectedAttributes((prev) => {
@@ -44,6 +46,21 @@ export default function Filter({ categories, attributes }: FilterProps) {
 
     const handleCategoryChange = (categoryId: number) => {
         setSelectedCategory(categoryId);
+    };
+
+    const handlePriceRange = () => {
+        const params = new URLSearchParams(searchParams.toString());
+        if (!minPrice) {
+            params.delete("minPrice");
+        } else {
+            params.set("minPrice", minPrice.toString());
+        }
+        if (!maxPrice) {
+            params.delete("maxPrice");
+        } else {
+            params.set("maxPrice", maxPrice.toString());
+        }
+        router.push(`/search?${params.toString()}`);
     };
 
 
@@ -109,16 +126,16 @@ export default function Filter({ categories, attributes }: FilterProps) {
                 <h3 className="font-semibold text-gray-900 mb-4">Price Range</h3>
                 <div className="flex items-center gap-3 mb-4">
                     <div className="relative w-full">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
-                        <input type="number" placeholder="Min" className="w-full pl-7 pr-3 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all" />
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">TL</span>
+                        <input type="number" value={minPrice ?? ''} onChange={(e) => setMinPrice(e.target.value ? Number(e.target.value) : null)} placeholder="Min" className="w-full pl-3 pr-8 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all" />
                     </div>
                     <span className="text-gray-400">-</span>
                     <div className="relative w-full">
-                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">$</span>
-                        <input type="number" placeholder="Max" className="w-full pl-7 pr-3 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all" />
+                        <span className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm">TL</span>
+                        <input type="number" value={maxPrice ?? ''} onChange={(e) => setMaxPrice(e.target.value ? Number(e.target.value) : null)} placeholder="Max" className="w-full pl-3 pr-8 py-2 border border-gray-200 rounded-lg text-sm outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 transition-all" />
                     </div>
                 </div>
-                <button className="w-full py-2 bg-gray-50 text-gray-700 font-medium rounded-lg text-sm hover:bg-gray-100 transition-colors">Apply</button>
+                <button onClick={() => handlePriceRange()} className="w-full py-2 bg-gray-50 text-gray-700 font-medium rounded-lg text-sm hover:bg-gray-100 transition-colors">Apply</button>
             </div>
 
             {/* Rating */}

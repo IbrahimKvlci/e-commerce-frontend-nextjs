@@ -13,11 +13,15 @@ export default async function SearchPage({ searchParams }: Props) {
     const params = await searchParams;
     const keyword = params.s;
     const categoryId = Number(params.category);
+    const minPrice = params.minPrice ? Number(params.minPrice) : undefined;
+    const maxPrice = params.maxPrice ? Number(params.maxPrice) : undefined;
     const attributeFromParams = params.attributes ? JSON.parse(decodeURIComponent(params.attributes)) : [];
 
     const productSearch: ProductSearch = {
         searchTerm: keyword,
         filters: attributeFromParams,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
         categoryIds: categoryId ? [categoryId] : []
     }
 
