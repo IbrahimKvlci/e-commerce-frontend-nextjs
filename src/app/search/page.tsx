@@ -5,6 +5,7 @@ import { searchProducts } from './action';
 import Filter from './components/Filter';
 import PageButton from './components/PageButton';
 import PageArrowButton from './components/PageArrowButton';
+import Sort from './components/Sort';
 
 type Props = {
     searchParams: Promise<{ [key: string]: string }>
@@ -18,6 +19,7 @@ export default async function SearchPage({ searchParams }: Props) {
     const minPrice = params.minPrice ? Number(params.minPrice) : undefined;
     const maxPrice = params.maxPrice ? Number(params.maxPrice) : undefined;
     const page = params.page ? Number(params.page) : 1;
+    const sort = params.sort ? Number(params.sort) : 0;
     const attributeFromParams = params.attributes ? JSON.parse(decodeURIComponent(params.attributes)) : [];
 
     const productSearch: ProductSearch = {
@@ -28,7 +30,7 @@ export default async function SearchPage({ searchParams }: Props) {
         categoryIds: categoryId ? [categoryId] : []
     }
 
-    const productsResponse = await searchProducts(productSearch, page);
+    const productsResponse = await searchProducts(productSearch, page, sort);
 
     if (!productsResponse.success) {
         return <div>Error: {productsResponse.message}</div>
@@ -80,20 +82,7 @@ export default async function SearchPage({ searchParams }: Props) {
                             </div>
 
                             <div className="flex items-center gap-4">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-sm text-gray-500">Sort by:</span>
-                                    <div className="relative group">
-                                        <button className="flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-blue-600 transition-colors">
-                                            Best Match <ChevronDown className="w-4 h-4" />
-                                        </button>
-                                        {/* Dropdown mockup */}
-                                        <div className="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-100 p-1 hidden group-hover:block z-20">
-                                            {['Best Match', 'Price: Low to High', 'Price: High to Low', 'Newest'].map(item => (
-                                                <div key={item} className="px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded-md cursor-pointer">{item}</div>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </div>
+                                <Sort />
                             </div>
                         </div>
 

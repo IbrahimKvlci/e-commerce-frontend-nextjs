@@ -19,6 +19,6 @@ export default function PageButton({ page }: { page: number }) {
 
 
     return (
-        <button onClick={() => handlePage()} className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 hover:text-black transition-colors">{page}</button>
+        <button onClick={() => handlePage()} className="w-10 h-10 flex items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 font-medium shadow-sm transition-all duration-200 hover:bg-blue-600 hover:border-blue-600 hover:text-white hover:shadow-md">{page}</button>
     )
 }

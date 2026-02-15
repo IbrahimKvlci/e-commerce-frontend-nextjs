@@ -17,8 +17,8 @@ export default class ProductService {
         return suggestions;
     }
 
-    async searchProducts(productSearch: ProductSearch, page: number): Promise<DataResponseModel<ProductSearchResponse>> {
-        const products: DataResponseModel<ProductSearchResponse> = await apiPost(`${this.API_URL}/search?page=${page}`, productSearch)
+    async searchProducts(productSearch: ProductSearch, page: number, sort: string): Promise<DataResponseModel<ProductSearchResponse>> {
+        const products: DataResponseModel<ProductSearchResponse> = await apiPost(`${this.API_URL}/search?page=${page}&sort=${sort}`, productSearch)
         return products;
     }
 
