@@ -17,3 +17,11 @@ export const formatPrice = (amount: number, currency: string = 'TRY'): string =>
 
     return `${formattedNumber} TL`;
 };
+
+export const createSlug = (text: string) => {
+    return text
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')
+        .replace(/[^\w\-]+/g, '');
+}

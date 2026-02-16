@@ -1,11 +1,12 @@
 "use client"
 
-import { useRouter, useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 export default function PageButton({ page }: { page: number }) {
 
     const router = useRouter();
     const searchParams = useSearchParams();
+    const pathname = usePathname();
 
     const handlePage = () => {
         const params = new URLSearchParams(searchParams.toString());
@@ -14,7 +15,7 @@ export default function PageButton({ page }: { page: number }) {
         } else {
             params.set("page", page.toString());
         }
-        router.push(`/search?${params.toString()}`);
+        router.push(`${pathname}?${params.toString()}`);
     }
 
 

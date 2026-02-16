@@ -1,5 +1,6 @@
 import { apiGet, apiPost } from "@/lib/serverApi";
 import { DisplayProduct } from "@/models/DisplayProduct";
+import { ProductCategoryRequest } from "@/models/ProductCategoryRequest";
 import { ProductSearch } from "@/models/ProductSearch";
 import { ProductSearchResponse } from "@/models/ProductSearchResponse";
 import { DataResponseModel } from "@/models/response/DataResponseModel";

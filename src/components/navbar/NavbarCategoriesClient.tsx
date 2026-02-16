@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { CategorySubcategory } from "@/models/CategorySubcategory";
+import { useRouter } from "next/navigation";
+import { createSlug } from "@/utils/formatters";
 
 type NavbarCategoriesClientProps = {
     categories: CategorySubcategory[];
@@ -11,6 +13,7 @@ export default function NavbarCategoriesClient({
     categories,
 }: NavbarCategoriesClientProps) {
     const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
+    const router = useRouter();
 
     if (!categories.length) {
         return null;
@@ -25,12 +28,12 @@ export default function NavbarCategoriesClient({
                             className="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1 py-2 px-3 rounded-md hover:bg-gray-100"
                             onMouseEnter={() => setHoveredCategory(index)}
                             onMouseLeave={() => setHoveredCategory(null)}
+                            onClick={() => router.push(`/category/${createSlug(category.name)}-c-${(category.id)}`)}
                         >
                             <span className="cursor-pointer">{category.name}</span>
                             <svg
-                                className={`w-4 h-4 transition-transform duration-200 ${
-                                    hoveredCategory === index ? "rotate-180" : ""
-                                }`}
+                                className={`w-4 h-4 transition-transform duration-200 ${hoveredCategory === index ? "rotate-180" : ""
+                                    }`}
                                 fill="none"
                                 stroke="currentColor"
                                 viewBox="0 0 24 24"
@@ -54,6 +57,7 @@ export default function NavbarCategoriesClient({
                                     {category.subcategories.map((subcategory, subIndex) => (
                                         <a
                                             key={subcategory.id}
+                                            onClick={() => router.push(`/category/${createSlug(category.name)}-c-${(subcategory.id)}`)}
                                             className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
                                         >
                                             {subcategory.name}

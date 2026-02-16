@@ -3,7 +3,7 @@
 import { ChevronDown, Star } from "lucide-react";
 import { Category } from "@/models/Category";
 import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Attribute } from "@/models/Attribute";
 
 interface FilterProps {
@@ -17,6 +17,7 @@ export default function Filter({ categories, attributes }: FilterProps) {
 
     const router = useRouter();
     const searchParams = useSearchParams();
+    const pathname = usePathname();
 
     const [selectedAttributes, setSelectedAttributes] = useState<Attribute[]>(attributes);
     const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
@@ -60,7 +61,7 @@ export default function Filter({ categories, attributes }: FilterProps) {
         } else {
             params.set("maxPrice", maxPrice.toString());
         }
-        router.push(`/search?${params.toString()}`);
+        router.push(`${pathname}?${params.toString()}`);
     };
 
 
@@ -68,14 +69,14 @@ export default function Filter({ categories, attributes }: FilterProps) {
         const params = new URLSearchParams(searchParams.toString());
         if (!selectedCategory) {
             params.delete("category");
-            router.push(`/search?${params.toString()}`);
+            router.push(`${pathname}?${params.toString()}`);
             return;
         }
         console.log("Selected category:", selectedCategory);
         const jsonString = JSON.stringify(selectedCategory);
         const encodedJson = encodeURIComponent(jsonString);
         params.set("category", encodedJson);
-        router.push(`/search?${params.toString()}`);
+        router.push(`${pathname}?${params.toString()}`);
     }, [selectedCategory]);
 
 
@@ -91,14 +92,14 @@ export default function Filter({ categories, attributes }: FilterProps) {
         });
         if (!isSelected) {
             params.delete("attributes");
-            router.push(`/search?${params.toString()}`);
+            router.push(`${pathname}?${params.toString()}`);
 
             return;
         }
         const jsonString = JSON.stringify(selectedAttributes);
         const encodedJson = encodeURIComponent(jsonString);
         params.set("attributes", encodedJson);
-        router.push(`/search?${params.toString()}`);
+        router.push(`${pathname}?${params.toString()}`);
     }, [selectedAttributes]);
 
     return (

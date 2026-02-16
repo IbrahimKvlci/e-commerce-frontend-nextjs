@@ -2,7 +2,7 @@
 
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 
 
@@ -12,6 +12,7 @@ export default function Sort() {
 
     const router = useRouter();
     const searchParams = useSearchParams();
+    const pathname = usePathname();
 
     const sortOptions = [
         { value: 0, label: 'Best Match' },
@@ -23,7 +24,7 @@ export default function Sort() {
         setSelectedSort(sortValue);
         const params = new URLSearchParams(searchParams.toString());
         params.set("sort", sortValue.toString());
-        router.push(`/search?${params.toString()}`);
+        router.push(`${pathname}?${params.toString()}`);
         setIsOpen(false);
 
     }

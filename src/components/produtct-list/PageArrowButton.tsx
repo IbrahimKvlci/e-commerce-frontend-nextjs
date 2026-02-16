@@ -1,12 +1,13 @@
 "use client"
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function PageArrowButton({ page, direction }: { page: number, direction: "left" | "right" }) {
 
     const router = useRouter();
     const searchParams = useSearchParams();
+    const pathname = usePathname();
 
     const handlePage = () => {
         const params = new URLSearchParams(searchParams.toString());
@@ -19,7 +20,7 @@ export default function PageArrowButton({ page, direction }: { page: number, dir
         } else {
             params.set("page", (page).toString());
         }
-        router.push(`/search?${params.toString()}`);
+        router.push(`${pathname}?${params.toString()}`);
     }
 
     return (

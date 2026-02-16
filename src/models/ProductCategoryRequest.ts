@@ -1,9 +1,8 @@
 import { Attribute } from "./Attribute";
 
-export interface ProductSearch {
+export interface ProductCategoryRequest {
 
-    searchTerm?: string;
-    categoryIds?: number[];
+    categoryId: number;
     filters?: Attribute[];
     minPrice?: number;
     maxPrice?: number;
