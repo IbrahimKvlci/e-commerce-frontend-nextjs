@@ -2,6 +2,7 @@ import { DisplayProduct } from "@/models/DisplayProduct";
 import { PLACEHOLDER_IMAGE_URL } from "@/utils/constants";
 import { formatPrice } from "@/utils/formatters";
 import { Star } from "lucide-react";
+import ProductCardAddCartBtn from "../product/ProductCardAddCartBtn";
 
 export default function ProductCard({ product }: { product: DisplayProduct }) {
     let imageUrl = PLACEHOLDER_IMAGE_URL;
@@ -43,10 +44,11 @@ export default function ProductCard({ product }: { product: DisplayProduct }) {
                     <div className="flex flex-col">
                         <span className="text-xl font-bold text-gray-900">{formatPrice(product.price)}</span>
                     </div>
-                    <button className="px-5 py-2.5 bg-gray-900 hover:bg-blue-600 text-white text-sm font-semibold rounded-lg shadow-lg shadow-gray-900/10 hover:shadow-blue-600/20 transition-all duration-300 transform active:scale-95 flex items-center gap-2">
-                        Add
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14" /><path d="M12 5v14" /></svg>
-                    </button>
+                    <ProductCardAddCartBtn
+                        productId={product.productId}
+                        sellerId={product.sellerId}
+                        quantity={1}
+                    />
                 </div>
             </div>
         </div>

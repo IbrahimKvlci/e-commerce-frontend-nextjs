@@ -7,9 +7,13 @@ async function apiRequest(url: string, options: RequestInit) {
     ...options,
   });
 
+  if (response.status === 500) {
+    throw new Error("Internal server error");
+  }
   if (response.status === 204) {
     return;
   }
+
 
   const data = await response.json();
 

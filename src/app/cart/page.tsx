@@ -7,6 +7,7 @@ export default async function CartPage() {
     const cartService = new CartService();
     const cartResponse = await cartService.getCartOfCustomer();
     if (!cartResponse.success) {
+        console.error(cartResponse.message);
         return redirect('/authentication/login?reason=unauthorized');
     }
     const cart = cartResponse.data;
@@ -20,7 +21,7 @@ export default async function CartPage() {
                 <div className="lg:col-span-2">
                     <div className="space-y-4">
                         {cart.cartItems.map((item) =>
-                            <div key={item.inventory.id}>
+                            <div key={item.id}>
                                 <ProductCartCard
                                     product={item}
                                 />

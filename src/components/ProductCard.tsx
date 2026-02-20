@@ -14,21 +14,7 @@ interface ProductCardProps {
 const placeholderImg = PLACEHOLDER_IMAGE_URL;
 
 const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
-  const [cart, setCart] = useState<Cart | null>(null);
 
-  useEffect(() => {
-    const fetchCart = async () => {
-      try {
-        const cartService = new CartClientService();
-        const cartDataResponse = await cartService.getCartOfCustomer();
-        setCart(cartDataResponse.data);
-      } catch (error) {
-        console.error("Failed to fetch cart data", error);
-      }
-    };
-
-    fetchCart();
-  }, []);
 
   const productTitleForUrl = product.title.replace(/\s+/g, '-').toLowerCase();
 
@@ -55,16 +41,10 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         </a>
         <div className="justify-between">
           <a href=""><p className="text-xl font-semibold text-black-700 mb-2">{formatPrice(product.price)}</p></a>
-          {cart && (
-            <ProductCardAddCartBtn addCartItemRequest={
-              {
-                cartId: cart.id,
-                productId: product.productId,
-                sellerId: product.sellerId,
-                quantity: 1
-              }
-            } />
-          )}
+
+          <ProductCardAddCartBtn
+          />
+
         </div>
       </div>
     </div>

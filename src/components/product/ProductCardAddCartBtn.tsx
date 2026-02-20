@@ -4,16 +4,33 @@ import CartItemService from "@/services/CartItemService"
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { Check } from "lucide-react";
+import { useEffect } from "react";
+import CartClientService from "@/services/CartClientService";
 
 
 interface ProductCardAddCartBtnProps {
-    addCartItemRequest: AddCartItemRequest;
+    productId: number;
+    sellerId: number;
+    quantity: number;
 }
 
-const ProductCardAddCartBtn: React.FC<ProductCardAddCartBtnProps> = ({ addCartItemRequest }) => {
+const ProductCardAddCartBtn: React.FC<ProductCardAddCartBtnProps> = (addCartItemRequest: ProductCardAddCartBtnProps) => {
 
     const cartItemService = new CartItemService()
     const [isAdded, setIsAdded] = useState(false);
+
+    const [cart, setCart] = useState<Cart | null>(null);
+
+    useEffect(() => {
+        const fetchCart = async () => {
+            const cartService = new CartClientService();
+            const cartDataResponse = await cartService.getCartOfCustomer();
+            setCart(cartDataResponse.data);
+
+        };
+
+        fetchCart();
+    }, []);
 
 
     return (
@@ -27,7 +44,16 @@ const ProductCardAddCartBtn: React.FC<ProductCardAddCartBtnProps> = ({ addCartIt
                 disabled={isAdded}
                 onClick={async () => {
                     try {
-                        await cartItemService.addCartItem(addCartItemRequest);
+                        if (!cart) {
+                            toast.error("Ürün eklemek için giriş yapmalısınız");
+                            return;
+                        }
+                        await cartItemService.addCartItem({
+                            cartId: cart.id,
+                            productId: addCartItemRequest.productId,
+                            sellerId: addCartItemRequest.sellerId,
+                            quantity: addCartItemRequest.quantity
+                        });
                         toast.success("Ürün sepete eklendi");
                         setIsAdded(true);
                         setTimeout(() => setIsAdded(false), 2000);
