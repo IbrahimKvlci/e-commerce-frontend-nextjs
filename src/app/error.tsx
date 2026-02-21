@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { AlertCircle, RefreshCcw, Home } from "lucide-react";
 import Link from "next/link";
+import { ROUTES } from "@/utils/routes";
 
 export default function Error({
     error,
@@ -40,7 +41,7 @@ export default function Error({
                 </button>
 
                 <Link
-                    href="/"
+                    href={ROUTES.home}
                     className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-white text-gray-900 border border-gray-200 rounded-xl hover:bg-gray-50 transform hover:scale-105 transition-all duration-200 shadow-sm hover:shadow-md font-medium"
                 >
                     <Home className="w-5 h-5" />

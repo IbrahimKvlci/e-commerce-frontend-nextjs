@@ -4,6 +4,7 @@ import { useRegisterStore } from "@/stores/useRegisterStore";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useRef, KeyboardEvent, ChangeEvent, ClipboardEvent, useEffect, useState } from "react";
+import { ROUTES } from "@/utils/routes";
 import { verifyCustomer } from "./action";
 import { toast } from "react-toastify";
 
@@ -17,7 +18,7 @@ export default function VerifyCode() {
 
     useEffect(() => {
         if (!email) {
-            router.push("/authentication/register");
+            router.push(ROUTES.register);
         }
     }, [email]);
 
@@ -30,7 +31,7 @@ export default function VerifyCode() {
         if (res.success) {
             toast.success("Doğrulama kodu başarıyla onaylandı.");
             reset();
-            router.push("/authentication/login");
+            router.push(ROUTES.login);
         } else {
             toast.error("Doğrulama kodu geçersiz.");
         }
@@ -189,7 +190,7 @@ export default function VerifyCode() {
 
                 <div className="mt-8 text-center">
                     <Link
-                        href="/authentication/login"
+                        href={ROUTES.login}
                         className="inline-flex items-center justify-center text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
                     >
                         <svg

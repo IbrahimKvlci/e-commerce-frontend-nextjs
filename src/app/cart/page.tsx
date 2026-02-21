@@ -1,6 +1,7 @@
 import ProductCartCard from "@/components/cart/ProductCartCard";
 import CartService from "@/services/CartService";
 import { redirect } from "next/navigation";
+import { ROUTES } from "@/utils/routes";
 
 export default async function CartPage() {
 
@@ -8,7 +9,7 @@ export default async function CartPage() {
     const cartResponse = await cartService.getCartOfCustomer();
     if (!cartResponse.success) {
         console.error(cartResponse.message);
-        return redirect('/authentication/login?reason=unauthorized');
+        return redirect(`${ROUTES.login}?reason=unauthorized`);
     }
     const cart = cartResponse.data;
 

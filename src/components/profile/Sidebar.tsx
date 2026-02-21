@@ -3,14 +3,15 @@
 import { MapPin, Package, User, LogOut } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { ROUTES } from "@/utils/routes";
 
 const Sidebar = () => {
 
     const pathname = usePathname();
 
     const navigation = [
-        { name: 'Profil', href: '/profile', icon: User },
-        { name: 'Siparişler', href: '/profile/orders', icon: Package },
+        { name: 'Profil', href: ROUTES.profile, icon: User },
+        { name: 'Siparişler', href: ROUTES.orders, icon: Package },
         { name: 'Adresler', href: '/profile/addresses', icon: MapPin },
     ];
 
@@ -38,7 +39,7 @@ const Sidebar = () => {
                     );
                 })}
                 <div className="pt-4 mt-4 border-t border-gray-200">
-                    <a href="/authentication/logout" className="text-red-600 hover:bg-red-50 group rounded-xl px-3 py-3 flex items-center text-sm font-medium transition-all duration-200">
+                    <a href={ROUTES.logout} className="text-red-600 hover:bg-red-50 group rounded-xl px-3 py-3 flex items-center text-sm font-medium transition-all duration-200">
                         <LogOut className="flex-shrink-0 -ml-1 mr-3 h-5 w-5 text-red-500" />
                         <span className="truncate">Çıkış Yap</span>
                     </a>

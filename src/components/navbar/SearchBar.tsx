@@ -4,6 +4,7 @@ import { getSuggestions } from "./action"
 import { Search, X } from "lucide-react"
 import { useRouter } from "next/navigation";
 import { useState } from "react"
+import { ROUTES } from "@/utils/routes";
 
 export default function SearchBar() {
 
@@ -26,7 +27,7 @@ export default function SearchBar() {
     }
 
     const onSuggestionClick = (suggestion: string) => {
-        router.push(`/search?s=${suggestion}`);
+        router.push(`${ROUTES.search}?s=${suggestion}`);
         setIsDropdownOpen(false);
     }
 

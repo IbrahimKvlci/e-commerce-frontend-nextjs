@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AuthService from "@/services/auth/AuthService";
 import { useSearchParams } from "next/navigation";
+import { ROUTES } from "@/utils/routes";
 
 export default function LoginPage() {
   const params = useSearchParams()
@@ -27,7 +28,7 @@ export default function LoginPage() {
     e.preventDefault();
     await authService.login({ email, password }).then(() => {
       toast.success("Giriş yapıldı");
-      window.location.href = "/";
+      window.location.href = ROUTES.home;
     }).catch((error) => {
       toast.error("Giriş yapılamadı");
     });
@@ -43,7 +44,7 @@ export default function LoginPage() {
         </h2>
         <p className="mt-2 text-center text-sm text-gray-600">
           Hesabınız yok mu?{" "}
-          <Link href="/authentication/register" className="font-medium text-blue-600 hover:text-blue-500">
+          <Link href={ROUTES.register} className="font-medium text-blue-600 hover:text-blue-500">
             Kayıt Ol
           </Link>
         </p>
@@ -217,15 +218,12 @@ export default function LoginPage() {
 
         {/* Back to Home */}
         <div className="mt-6 text-center">
-          <Link
-            href="/"
-            className="text-sm text-gray-600 hover:text-gray-900"
-          >
+          <Link href={ROUTES.home} className="text-sm text-gray-600 hover:text-gray-900">
             ← Anasayfaya Dön
           </Link>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

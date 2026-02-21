@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { CategorySubcategory } from "@/models/CategorySubcategory";
 import { useRouter } from "next/navigation";
-import { createSlug } from "@/utils/formatters";
+import { ROUTES } from "@/utils/routes";
 
 type NavbarCategoriesClientProps = {
     categories: CategorySubcategory[];
@@ -28,7 +28,7 @@ export default function NavbarCategoriesClient({
                             className="text-gray-700 hover:text-blue-600 transition-colors font-medium flex items-center space-x-1 py-2 px-3 rounded-md hover:bg-gray-100"
                             onMouseEnter={() => setHoveredCategory(index)}
                             onMouseLeave={() => setHoveredCategory(null)}
-                            onClick={() => router.push(`/category/${createSlug(category.name)}-c-${(category.id)}`)}
+                            onClick={() => router.push(ROUTES.category(category.name, category.id.toString()))}
                         >
                             <span className="cursor-pointer">{category.name}</span>
                             <svg
@@ -57,7 +57,7 @@ export default function NavbarCategoriesClient({
                                     {category.subcategories.map((subcategory, subIndex) => (
                                         <a
                                             key={subcategory.id}
-                                            onClick={() => router.push(`/category/${createSlug(category.name)}-c-${(subcategory.id)}`)}
+                                            onClick={() => router.push(ROUTES.category(category.name, subcategory.id.toString()))}
                                             className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors"
                                         >
                                             {subcategory.name}

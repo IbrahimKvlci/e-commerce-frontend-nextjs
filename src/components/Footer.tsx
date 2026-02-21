@@ -1,5 +1,5 @@
 import CategoryService from "@/services/CategoryService";
-import { createSlug } from "@/utils/formatters";
+import { ROUTES } from "@/utils/routes";
 
 export default async function Footer() {
 
@@ -38,10 +38,10 @@ export default async function Footer() {
                         {categories.map((category) => {
                             return (
                                 <ul key={category.id} className="space-y-2">
-                                    <a href={`/category/${createSlug(category.name)}-c-${category.id}`} className="text-white transition-colors">{category.name}</a>
+                                    <a href={ROUTES.category(category.name, category.id.toString())} className="text-white transition-colors">{category.name}</a>
                                     {category.subcategories.map((subcategory) => {
                                         return (
-                                            <li key={subcategory.id}><a href={`/category/${createSlug(subcategory.name)}-c-${subcategory.id}`} className="text-gray-400 hover:text-white transition-colors">{subcategory.name}</a></li>
+                                            <li key={subcategory.id}><a href={ROUTES.category(subcategory.name, subcategory.id.toString())} className="text-gray-400 hover:text-white transition-colors">{subcategory.name}</a></li>
                                         )
                                     })}
                                 </ul>

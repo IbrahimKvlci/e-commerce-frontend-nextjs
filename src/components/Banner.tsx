@@ -4,6 +4,7 @@ import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ROUTES } from "@/utils/routes";
 
 // Import Swiper styles
 import "swiper/css";
@@ -68,7 +69,7 @@ const Banner = () => {
                   {banner.subtitle}
                 </p>
                 <a
-                  href="/"
+                  href={ROUTES.home}
                   className="inline-block mt-4 bg-orange-600 hover:bg-orange-700 transition-colors text-white px-8 py-3 rounded-lg shadow-lg text-lg font-semibold"
                 >
                   Start Shopping

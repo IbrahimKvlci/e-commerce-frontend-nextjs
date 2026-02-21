@@ -6,6 +6,7 @@ import { registerCustomer } from "./action";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
 import { useRegisterStore } from "@/stores/useRegisterStore";
+import { ROUTES } from "@/utils/routes";
 
 export default function Register() {
     const router = useRouter();
@@ -34,7 +35,7 @@ export default function Register() {
                 </h2>
                 <p className="mt-2 text-center text-sm text-gray-600">
                     Zaten hesabınız var mı?{" "}
-                    <Link href="/authentication/login" className="font-medium text-blue-600 hover:text-blue-500">
+                    <Link href={ROUTES.login} className="font-medium text-blue-600 hover:text-blue-500">
                         Giriş Yap
                     </Link>
                 </p>
@@ -232,7 +233,7 @@ export default function Register() {
 
                 <div className="mt-6 text-center">
                     <Link
-                        href="/"
+                        href={ROUTES.home}
                         className="text-sm text-gray-600 hover:text-gray-900"
                     >
                         ← Anasayfaya Dön
