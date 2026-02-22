@@ -1,10 +1,51 @@
+"use client"
+
+import { getCustomerInfo } from "./actions";
+import ProfileUpdateBtn from "./components/profileUpdateBtn";
+import { useEffect, useState } from "react";
+import { CustomerInfo } from "@/models/auth/CustomerInfo";
+
 export default function Profile() {
+
+
+    useEffect(() => {
+        getCustomerInfo().then((customerInfoResponse) => {
+            const customerInfo = customerInfoResponse.data;
+            setCustomerInfo(customerInfo);
+            setCustomerInfoChange(customerInfo);
+        });
+    }, []);
+
+    const [customerInfoChange, setCustomerInfoChange] = useState<CustomerInfo>();
+    const [customerInfo, setCustomerInfo] = useState<CustomerInfo>();
+
+    const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCustomerInfoChange(prev => {
+            if (prev) {
+                return { ...prev, name: e.target.value }
+            }
+            return prev;
+        })
+    };
+
+    const handleSurnameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setCustomerInfoChange(prev => {
+            if (prev) {
+                return { ...prev, surname: e.target.value }
+            }
+            return prev;
+        })
+    };
+
+
+
+
     return (
         <div className="bg-white rounded-2xl shadow-sm ring-1 ring-gray-200 overflow-hidden">
             <div className="px-6 py-6">
                 <div className="mb-6">
-                    <h2 className="text-xl font-bold text-gray-900">John Doe</h2>
-                    <p className="text-sm text-gray-500">john.doe@example.com</p>
+                    <h2 className="text-xl font-bold text-gray-900">{customerInfo?.name} {customerInfo?.surname}</h2>
+                    <p className="text-sm text-gray-500">{customerInfo?.email}</p>
                 </div>
 
                 <div className="border-t border-gray-100 pt-6">
@@ -18,34 +59,22 @@ export default function Profile() {
                             <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
                                 <div>
                                     <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">Ad</label>
-                                    <input type="text" name="first-name" id="first-name" autoComplete="given-name" className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3 border" placeholder="John" />
+                                    <input type="text" name="first-name" id="first-name" autoComplete="given-name" className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3 border" value={customerInfoChange?.name ?? ""} onChange={handleNameChange} />
                                 </div>
 
                                 <div>
                                     <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">Soyad</label>
-                                    <input type="text" name="last-name" id="last-name" autoComplete="family-name" className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3 border" placeholder="Doe" />
-                                </div>
-
-                                <div className="sm:col-span-2">
-                                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">E-posta adresi</label>
-                                    <input type="email" name="email" id="email" autoComplete="email" className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3 border" placeholder="john.doe@example.com" />
-                                </div>
-
-                                <div className="sm:col-span-2">
-                                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Telefon numarası</label>
-                                    <input type="tel" name="phone" id="phone" autoComplete="tel" className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3 border" placeholder="+1 (555) 000-0000" />
+                                    <input type="text" name="last-name" id="last-name" autoComplete="family-name" className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm py-2.5 px-3 border" value={customerInfoChange?.surname ?? ""} onChange={handleSurnameChange} />
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div className="mt-8 flex justify-end">
-                        <button type="button" className="bg-white py-2 px-4 border border-gray-300 rounded-lg shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 mr-3">
-                            İptal
-                        </button>
-                        <button type="submit" className="bg-indigo-600 py-2 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                            Değişiklikleri Kaydet
-                        </button>
+                        <ProfileUpdateBtn customerInfo={customerInfoChange!}
+                            onSuccess={() => {
+                                setCustomerInfo(customerInfoChange!);
+                            }} />
                     </div>
                 </div>
             </div>
