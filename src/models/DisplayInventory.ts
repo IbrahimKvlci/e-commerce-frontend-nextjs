@@ -21,7 +21,7 @@ interface ProductDTO {
 
 interface InventoryDTO {
     id: number;
-    productDTO: ProductDTO;
+    product: ProductDTO;
     quantity: number;
     sellerId: number;
     price: number;
