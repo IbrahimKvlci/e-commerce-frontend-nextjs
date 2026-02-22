@@ -19,11 +19,6 @@ export default async function Navbar() {
                 <SearchBar />
                 {/* Icon Buttons: Favourite, Cart, Login/Logout */}
                 <div className="flex items-center space-x-6">
-                    <a href="/favourites" className="text-gray-600 hover:text-blue-600 transition-colors" title="Favourites">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 fill-none stroke-current" viewBox="0 0 24 24" strokeWidth="2">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.318 6.318a4.5 4.5 0 0 1 6.364 0L12 7.638l1.318-1.32a4.5 4.5 0 1 1 6.364 6.364L12 21.364l-7.682-7.682a4.5 4.5 0 0 1 0-6.364z" />
-                        </svg>
-                    </a>
                     <a href={ROUTES.cart} className="text-gray-600 hover:text-blue-600 transition-colors" title="Cart">
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 fill-none stroke-current" viewBox="0 0 24 24" strokeWidth="2">
                             <circle cx="9" cy="21" r="1" />

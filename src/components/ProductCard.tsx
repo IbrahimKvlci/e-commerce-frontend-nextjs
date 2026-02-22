@@ -31,8 +31,6 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             className="w-full h-full object-cover object-center transition-transform duration-200 group-hover:scale-105"
             loading="lazy"
           />
-          {/* New Badge Example */}
-          <span className="absolute top-3 left-3 bg-blue-500 text-white px-2 py-0.5 rounded text-xs shadow">New</span>
         </div>
       </a>
       <div className="p-5 flex-1 flex flex-col">
@@ -43,6 +41,9 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <a href=""><p className="text-xl font-semibold text-black-700 mb-2">{formatPrice(product.price)}</p></a>
 
           <ProductCardAddCartBtn
+            productId={product.productId}
+            sellerId={product.sellerId}
+            quantity={1}
           />
 
         </div>

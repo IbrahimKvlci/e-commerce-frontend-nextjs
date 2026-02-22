@@ -14,11 +14,7 @@ export default function ProductCard({ product }: { product: DisplayProduct }) {
         <div className="group bg-white rounded-2xl border border-gray-100 hover:border-blue-100 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_25px_-5px_rgba(6,81,237,0.15)] transition-all duration-300 overflow-hidden flex flex-col">
             {/* Image */}
             <div className="relative aspect-[4/3] bg-gray-100 overflow-hidden">
-                <div className="absolute top-3 right-3 z-10">
-                    <button className="w-9 h-9 rounded-full bg-white/80 backdrop-blur-sm flex items-center justify-center text-gray-400 hover:text-red-500 hover:bg-white transition-all shadow-sm group/heart">
-                        <svg xmlns={imageUrl} width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="transition-transform group-hover/heart:scale-110"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" /></svg>
-                    </button>
-                </div>
+                <img src={imageUrl} alt={product.title} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
             </div>
 
             {/* Content */}
