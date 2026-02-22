@@ -16,7 +16,7 @@ export async function addToCart(productId: number, sellerId: number): Promise<Da
     const cartService = new CartService();
     const cart: DataResponseModel<Cart> = await cartService.getCartOfCustomer();
     if (!cart.success || !cart.data) {
-        return { success: false, message: cart.message, data: undefined };
+        return { success: false, message: cart.message, data: null };
     }
     const addCartItemRequest: AddCartItemRequest = {
         cartId: cart.data.id,

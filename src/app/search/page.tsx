@@ -31,11 +31,11 @@ export default async function SearchPage({ searchParams }: Props) {
         return <div>Error: {productsResponse.message}</div>
     }
 
-    const products = productsResponse.data.products.content;
-    const categories = productsResponse.data.categories;
-    const attributes = productsResponse.data.attributes;
-    const totalPages = productsResponse.data.products.totalPages;
-    const totalElements = productsResponse.data.products.totalElements;
+    const products = productsResponse.data?.products.content;
+    const categories = productsResponse.data?.categories;
+    const attributes = productsResponse.data?.attributes;
+    const totalPages = productsResponse.data?.products.totalPages;
+    const totalElements = productsResponse.data?.products.totalElements;
 
 
     return (
@@ -48,12 +48,12 @@ export default async function SearchPage({ searchParams }: Props) {
                 </div>
 
                 <ProductList
-                    products={products}
-                    categories={categories}
-                    attributes={attributes}
+                    products={products!}
+                    categories={categories!}
+                    attributes={attributes!}
                     params={{ category: categoryId.toString() }}
                     page={page}
-                    totalPages={totalPages}
+                    totalPages={totalPages!}
                 />
             </div>
         </div>

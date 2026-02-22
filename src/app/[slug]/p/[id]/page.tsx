@@ -19,7 +19,6 @@ export default async function ProductPage(props: PageProps) {
     const { slug, id } = await props.params;
     const searchParams = await props.searchParams;
     const sellerId = Number(searchParams.seller);
-    console.log(sellerId, id, slug);
 
     const inventoryResponse = await getDisplayInventoryByProductIdAndSellerId(Number(id), Number(sellerId));
 
@@ -34,14 +33,14 @@ export default async function ProductPage(props: PageProps) {
     }
 
     const inventory = inventoryResponse.data;
-    const productTitle = inventory.inventoryDTO.productDTO.title;
-    const productBrand = inventory.inventoryDTO.productDTO.brandDTO.name;
-    const productDescription = inventory.inventoryDTO.productDTO.description;
+    const productTitle = inventory.inventoryDTO.product.title;
+    const productBrand = inventory.inventoryDTO.product.brandDTO.name;
+    const productDescription = inventory.inventoryDTO.product.description;
     const productPrice = inventory.inventoryDTO.price;
     const productStock = inventory.inventoryDTO.quantity;
-    const productId = inventory.inventoryDTO.productDTO.id;
+    const productId = inventory.inventoryDTO.product.id;
 
-    let category = inventory.inventoryDTO.productDTO.categoryDTO;
+    let category = inventory.inventoryDTO.product.categoryDTO;
     let categoryPath = [];
     categoryPath.unshift(category);
     while (category.parentCategory) {
@@ -70,7 +69,7 @@ export default async function ProductPage(props: PageProps) {
                 <div className="lg:grid lg:grid-cols-2 lg:gap-x-16 lg:items-start">
 
                     {/* Left Column: Image Gallery */}
-                    <ProductImageGallery imagesUrl={inventory.inventoryDTO.productDTO.imagesUrl} />
+                    <ProductImageGallery imagesUrl={inventory.inventoryDTO.product.imagesUrl} />
 
                     {/* Right Column: Product Info */}
                     <div className="mt-10 lg:mt-0 lg:sticky lg:top-8">
