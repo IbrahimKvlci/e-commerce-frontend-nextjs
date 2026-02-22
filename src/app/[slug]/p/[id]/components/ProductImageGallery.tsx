@@ -38,14 +38,6 @@ export default function ProductImageGallery({ imagesUrl }: { imagesUrl: string[]
                     alt="SonicMaster Pro Headphones"
                     className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute top-4 right-4 flex flex-col gap-3">
-                    <button className="p-3 bg-white/90 backdrop-blur-md rounded-full text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors shadow-sm">
-                        <Heart className="w-5 h-5" />
-                    </button>
-                    <button className="p-3 bg-white/90 backdrop-blur-md rounded-full text-neutral-900 hover:bg-neutral-900 hover:text-white transition-colors shadow-sm">
-                        <Share2 className="w-5 h-5" />
-                    </button>
-                </div>
             </div>
         </div>
     )
