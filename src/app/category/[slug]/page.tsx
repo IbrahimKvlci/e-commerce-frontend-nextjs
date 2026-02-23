@@ -33,11 +33,11 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
     const productsResponse = await getProductsByCategoryId(productSearchRequest, page, sort);
 
-    const products = productsResponse.data.products.content;
-    const categories = productsResponse.data.categories;
-    const attributes = productsResponse.data.attributes;
-    const totalPages = productsResponse.data.products.totalPages;
-    const totalElements = productsResponse.data.products.totalElements;
+    const products = productsResponse.data?.products.content;
+    const categories = productsResponse.data?.categories;
+    const attributes = productsResponse.data?.attributes;
+    const totalPages = productsResponse.data?.products.totalPages;
+    const totalElements = productsResponse.data?.products.totalElements;
 
     return (
         <div className="bg-gray-50 min-h-screen font-sans">
@@ -45,16 +45,16 @@ export default async function CategoryPage({ params, searchParams }: Props) {
                 {/* Breadcrumb / Header area */}
                 <div className="mb-8 pl-1">
                     <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Category {categoryId}</h1>
-                    <p className="text-gray-500 mt-2">Found {products.length} results</p>
+                    <p className="text-gray-500 mt-2">Found {products?.length} results</p>
                 </div>
 
                 <ProductList
-                    products={products}
-                    categories={categories}
-                    attributes={attributes}
+                    products={products!}
+                    categories={categories!}
+                    attributes={attributes!}
                     params={{ category: categoryId.toString() }}
                     page={page}
-                    totalPages={totalPages}
+                    totalPages={totalPages!}
                 />
             </div>
         </div>
