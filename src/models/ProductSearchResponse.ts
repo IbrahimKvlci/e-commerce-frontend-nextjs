@@ -7,4 +7,5 @@ export interface ProductSearchResponse {
     products: PageModel<DisplayProduct>;
     categories: Category[];
     attributes: Attribute[];
+    categoryName?: string;
 }

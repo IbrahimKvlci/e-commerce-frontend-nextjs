@@ -10,9 +10,7 @@ type Props = {
 export default async function CategoryPage({ params, searchParams }: Props) {
     const sParams = await searchParams;
     const pParams = await params;
-    console.log(pParams);
     const categoryId = pParams.slug.split('-c-').pop();
-    console.log(categoryId);
 
     const minPrice = sParams.minPrice ? Number(sParams.minPrice) : undefined;
     const maxPrice = sParams.maxPrice ? Number(sParams.maxPrice) : undefined;
@@ -38,13 +36,14 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     const attributes = productsResponse.data?.attributes;
     const totalPages = productsResponse.data?.products.totalPages;
     const totalElements = productsResponse.data?.products.totalElements;
+    const categoryName = productsResponse.data?.categoryName;
 
     return (
         <div className="bg-gray-50 min-h-screen font-sans">
             <div className="container mx-auto px-4 py-8">
                 {/* Breadcrumb / Header area */}
                 <div className="mb-8 pl-1">
-                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Category {categoryId}</h1>
+                    <h1 className="text-3xl font-bold text-gray-900 tracking-tight">Category {categoryName}</h1>
                     <p className="text-gray-500 mt-2">Found {products?.length} results</p>
                 </div>
 
