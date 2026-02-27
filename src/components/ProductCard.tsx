@@ -27,7 +27,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <img
             src={product.imagesUrl.length > 0 ? product.imagesUrl[0] : placeholderImg}
             alt={product.title}
-            className="w-full h-full object-cover object-center transition-transform duration-200 group-hover:scale-105"
+            className="w-full h-full object-scale-down object-center transition-transform duration-200 group-hover:scale-105"
             loading="lazy"
           />
         </div>

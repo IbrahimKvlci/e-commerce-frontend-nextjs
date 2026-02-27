@@ -25,7 +25,7 @@ export default function ProductImageGallery({ imagesUrl }: { imagesUrl: string[]
                         <img
                             src={image}
                             alt={`Thumbnail ${index}`}
-                            className="w-full h-full object-cover"
+                            className="w-full h-full object-scale-down"
                         />
                     </button>
                 ))}
@@ -36,7 +36,7 @@ export default function ProductImageGallery({ imagesUrl }: { imagesUrl: string[]
                 <img
                     src={imagesUrl[selectedImage] ?? placeholderImage}
                     alt="SonicMaster Pro Headphones"
-                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    className="w-full h-full object-scale-down object-center group-hover:scale-105 transition-transform duration-500"
                 />
             </div>
         </div>
