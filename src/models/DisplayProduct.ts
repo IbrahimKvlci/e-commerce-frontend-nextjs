@@ -4,6 +4,7 @@ export interface DisplayProduct {
   description?: string;
   brandName: string;
   price: number;
+  discountPrice: number;
   sellerId: number;
   imagesUrl: string[];
 }

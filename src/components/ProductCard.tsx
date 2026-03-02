@@ -37,7 +37,16 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
           <h3 className="text-lg text-gray-900 mb-15 line-clamp-2 w-full break-words">{product.brandName} {product.title}</h3>
         </a>
         <div className="justify-between">
-          <a href={ROUTES.product(product.title, product.productId.toString(), product.sellerId.toString())}><p className="text-xl font-semibold text-black-700 mb-2">{formatPrice(product.price)}</p></a>
+          <a href={ROUTES.product(product.title, product.productId.toString(), product.sellerId.toString())}>
+            {product.discountPrice && product.discountPrice > 0 && product.discountPrice < product.price ? (
+              <div className="mb-2">
+                <span className="text-sm line-through text-gray-500 mr-2">{formatPrice(product.price)}</span>
+                <span className="text-xl font-semibold text-red-600">{formatPrice(product.discountPrice)}</span>
+              </div>
+            ) : (
+              <p className="text-xl font-semibold text-black-700 mb-2">{formatPrice(product.price)}</p>
+            )}
+          </a>
 
           <ProductCardAddCartBtn
             productId={product.productId}

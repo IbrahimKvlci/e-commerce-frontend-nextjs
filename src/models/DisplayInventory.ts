@@ -25,6 +25,7 @@ interface InventoryDTO {
     quantity: number;
     sellerId: number;
     price: number;
+    discountPrice: number;
 }
 
 interface OtherInventory {
