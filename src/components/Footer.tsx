@@ -35,7 +35,7 @@ export default async function Footer() {
                     {/* Categories */}
                     <div className="space-y-4">
                         <h4 className="font-semibold text-lg">Categories</h4>
-                        {categories.map((category) => {
+                        {categories && categories.map((category) => {
                             return (
                                 <ul key={category.id} className="space-y-2">
                                     <a href={ROUTES.category(category.name, category.id.toString())} className="text-white transition-colors">{category.name}</a>
