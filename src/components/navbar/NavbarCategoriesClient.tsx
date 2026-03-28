@@ -15,7 +15,7 @@ export default function NavbarCategoriesClient({
     const [hoveredCategory, setHoveredCategory] = useState<number | null>(null);
     const router = useRouter();
 
-    if (!categories.length) {
+    if (!categories?.length) {
         return null;
     }
 
